@@ -10,7 +10,7 @@ from sklearn.metrics import classification_report
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
-import tensorflow as ts
+
 
 
 
@@ -238,25 +238,25 @@ print(classification_report(y_test,y_prediction))
 
 
 # Naive Bayes
-#nb_model = GaussianNB()
-# nb_model.fit(X_train, y_train)
+nb_model = GaussianNB()
+nb_model.fit(X_train, y_train)
 
-# y_nb_pred = nb_model.predict(X_test)
-# print(classification_report(y_test,y_nb_pred))
+y_nb_pred = nb_model.predict(X_test)
+print(classification_report(y_test,y_nb_pred))
 
 # Logistic Regression
-# lg_model = LogisticRegression()
-# lg_model = lg_model.fit(X_train, y_train)
+lg_model = LogisticRegression()
+lg_model = lg_model.fit(X_train, y_train)
 
-# y_lg_pred = lg_model.predict(X_test)
-# print(classification_report(y_test,y_lg_pred))
+y_lg_pred = lg_model.predict(X_test)
+print(classification_report(y_test,y_lg_pred))
 
 # Support Vector Machines (SVM)
-# svm_model = SVC()
-# svm_model = svm_model.fit(X_train, y_train)
+svm_model = SVC()
+svm_model = svm_model.fit(X_train, y_train)
 
-# y_svm_pred = svm_model.predict(X_test)
-# print(classification_report(y_test,y_svm_pred))
+y_svm_pred = svm_model.predict(X_test)
+print(classification_report(y_test,y_svm_pred))
 
 
 # neural network
@@ -290,3 +290,5 @@ Output layer (гарах давхарга)
 """
 
 # tensorflow is an open source library that helps you develop and train your ML models
+
+# 1:50
