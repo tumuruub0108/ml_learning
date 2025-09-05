@@ -1,0 +1,203 @@
+Main Challenges of Machine Learning
+In short, since your main task is to select a model and train it on some data, the two things that can go wrong are “bad model” and “bad data”
+
+
+1. Insufficient Quantity of Training Data
+Machine learning is not quite there yet; it takes a lot of data for most machine learning algorithms to work properly.
+
+2. Nonrepresentative Training Data
+In order to generalize well, it is crucial that your training data be representative of the new cases you want to generalize to. This is true whether you use instance-based learning or model-based learning.
+
+Nonrepresentative Training Data гэдэг нь машин сургалт (machine learning)-д ашиглаж байгаа сургалтын өгөгдөл (training data) тухайн асуудлыг бодитоор төлөөлж чадахгүй байгаа өгөгдлийг хэлдэг. Өөрөөр хэлбэл, сургалтын өгөгдөл нь бодит орчинд тохиолдож болох бүх нөхцөл байдал, төрөл, хувилбарыг хангалттай сайн тусгасан бус байна гэсэн үг.
+
+Төрөл бүрийн өгөгдөл хангалтгүй байх:
+
+Хэрвээ та нүүр таних системд зөвхөн нэг арьсны өнгөтэй хүмүүсийн зураг ашиглавал, систем бусад арьсны өнгөтэй хүмүүсийг танихдаа алдаа гаргах магадлал өндөр болно.
+
+Өөрчлөгддөг орчныг тусгаагүй байх:
+
+Автомашины хөдөлгөөний датад зөвхөн өдөр цагийн нөхцлийг ашиглавал, шөнө эсвэл бороотой үед системийн гүйцэтгэл муудаж магадгүй.
+
+Давхардаж, тэнцвэргүй өгөгдөл:
+
+Сургалтын өгөгдөлд тодорхой нэг ангилал (label) давамгайлвал, модел зөвхөн тэр ангиллыг сайн танина, бусад ангиллыг муу таних болно.
+
+Сөрөг үр дагавар:
+
+Модел бодит орчинд сайн ажиллахгүй.
+Bias (тэгш бус байдал) үүсэж, зарим бүлэгт алдаа гаргах магадлал өндөр болно.
+
+Хялбар жишээ:
+
+Нүүр таних систем зөвхөн 20-30 насны хүмүүсийн зураг дээр сурсан бол 50-60 насны хүмүүст алдаа их гарна.
+
+
+
+3. Poor-Quality Data
+Obviously, if your training data is full of errors, outliers, and noise (e.g., due
+to poor-quality measurements)
+
+
+4. Irrelevant Features
+Irrelevant Features гэдэг нь машин сургалтын (machine learning) загвар (model) сурч байх үед тасралтгүй буюу тодорхой үр дүнд (target) ямар ч нөлөөгүй, хэрэггүй өгөгдлийн шинж чанарууд (variables, columns)-ыг хэлдэг.
+
+Өөрөөр хэлбэл:
+Эдгээр шинж чанар нь model-ийн гүйцэтгэлд нэмэргүй байх ба зарим тохиолдолд алдаа ихэсгэж, сургалтыг удаашруулж, overfitting үүсгэж болно.
+
+Жишээ:
+
+Өдрийн цагийг таамаглах системд:
+Хоолны зураг дээрх хүмүүсийн зурагт байгаа дэвсгэрийн өнгө нь цагийг таамаглахад irrelevant feature байна.
+
+Оюутны шалгалтын оноог таамаглахад:
+Оюутны гар утасны дугаар нь irrelevant feature болно.
+
+Онцлог:
+
+Model-ийг хэрэггүй мэдээллээр “буудах” магадлалтай.
+Feature selection буюу чухал шинж чанарыг сонгох процесс нь irrelevant features-ийг устгахад чиглэгддэг
+
+
+4. Overfitting the Training Data
+Overfitting the Training Data гэдэг нь машин сургалтын (machine learning) загвар (model) сургалтын өгөгдөл дээр хэт сайн ажиллаж, бодит (шинэ) өгөгдөл дээр муу ажиллах үзэгдэл юм
+
+
+Энгийнээр тайлбарлавал:
+Модел нь сургалтын өгөгдлийн жижиг алдааг ч “сураглаж”, шумбах” буюу сургалтын өгөгдлийг хэт нарийн санаж авдаг.
+Үүний үр дүнд модел нь шинэ, харагдаагүй өгөгдлийг зөв таамаглах чадваргүй болно.
+
+Шалтгаан:
+
+Загвар нь хэт нарийн (complex) байх, жишээ нь:
+Маш олон feature ашигласан, гүн нейрон сүлжээ (deep neural network) гэх мэт.
+Сургалтын өгөгдөл нь багатай, тэнцвэргүй байх.
+Өгөгдөлд шум, алдаа их байх.
+
+Жишээ:
+
+Сурагчийн оноог таамаглах моделд:
+Хэрвээ загвар нь зөвхөн тухайн сургалтын өгөгдлийн бүх жижиг ялгааг санаж авбал, бусад сурагчдын оноог таамаглахад муу ажиллана.
+
+Хялбар дүрслэл:
+
+Сургалтын өгөгдлийг “шүлэг шиг цээжлэх”
+Шинэ өгөгдлийг уншиж ойлгох чадваргүй
+
+Сэрэмжлүүлэх арга:
+
+Regularization ашиглах (L1, L2)
+Cross-validation хийх
+Өгөгдлийг нэмэгдүүлэх (data augmentation)
+Загварын энгийн байдал
+
+
+
+5. Underfitting the Training Data
+“Underfitting the training data” гэдэг нь машин сургалтын үед загвар (model) сургалтын өгөгдлийн хэв маяг (pattern)–ийг зөв таньж чадахгүй байгаа нөхцөл юм.
+
+Энгийнээр хэлэхэд 
+загвар нь өгөгдлийн мэдээллийг хангалттай сайн сураагүй, ихэнх өгөгдлийн онцлогийг илрүүлж чадахгүй байна гэсэн үг
+
+Шалтгаан:
+
+Загвар хэт энгийн байхад (simple model) – жишээ нь, шугаман регресс (linear regression) нарийн төвөгтэй өгөгдлийг таамаглахад хүрэлцэхгүй.
+Сургалтын өгөгдөл хэт цөөн байна.
+Шигтгэсэн feature буюу шинж чанар хангалтгүй байна.
+
+Шинж тэмдэг:
+
+Сургалтын өгөгдөл дээр алдаа их байна.
+Шинэ өгөгдөл дээр ч алдаа их байна.
+Загвар нь learning маш бага байгаа мэт харагддаг.
+
+Жишээ:
+
+Өгөгдөл нь тун энгийн биш (curve, pattern), харин загвар нь шугаман байвал загвар өгөгдлийн онцлогийг барьж чадахгүй – энэ нь underfitting.
+
+Шийдэл:
+
+Загварын хүчирхэг байдал (complexity)–ийг нэмэх (жишээ нь, олон давхаргатай нейрон сүлжээ).
+Илүү feature нэмэх.
+Сургалтын өгөгдлийг олшруулах.
+
+
+Testing and Validating
+
+The only way to know how well a model will generalize to new cases is to actually try it out on new cases. One way to do that is to put your model in production and monitor how well it performs. This works well, but if your model is horribly bad, your users will complain
+
+
+A better option is to split your data into two sets: the training set and the test set. As these names imply, you train your model using the training set, and you test it using the test set.
+The error rate on new cases is called the generalization error (or out-of-sample error), and by evaluating your model on the test set, you get an estimate of this error. This value tells you how well your model will perform on instances it has never seen before.
+
+If the training error is low (i.e., your model makes few mistakes on the training set) but the generalization error is high, it means that your model is overfitting the training data.
+
+TIP
+It is common to use 80% of the data for training and hold out 20% for testing. However, this depends on the size of the dataset: if it contains 10 million instances, then holding out 1% means your test set will contain 100,000 instances, probably more than enough to get a good estimate of the generalization error.
+
+
+Hyperparameter Tuning and Model Selection
+
+1. Hyperparameter Tuning
+
+Suppose you find the best hyperparameter value that produces a model with the lowest generalization error⁠ —say, just 5% error. You launch this model into production, but unfortunately it does not perform as well as expected and produces 15% errors. What just happened? The problem is that you measured the generalization error multiple times on the test set, and you adapted the model and hyperparameters to produce the best model for that particular set. This means the model is unlikely to perform as well on new data. A common solution to this problem is called holdout validation
+
+Машин сургалтын моделийн гаднаас өгөгддөг тохиргоо параметрүүдийг зөв сонгох үйл явц юм.
+Эдгээр параметрүүд нь моделийн суралцах үйл явцад шууд нөлөө үзүүлдэг боловч дата өөрөө сурахгүй (дата-суугаа параметр биш).
+
+Жишээ:
+
+Learning rate (суралцах хурд)
+Number of trees (decision tree ensemble-д)
+Number of layers or neurons (neural network-д)
+
+Hyperparameter Tuning-ийн зорилго: 
+Моделийг хамгийн сайн гүйцэтгэлтэй болгох.
+
+
+2. Model Selection
+
+Олон модел эсвэл алгоритм дундаас хамгийн сайн ажиллах модель, архитектур эсвэл тохиргоог сонгох үйл явц.
+
+Жишээ: Decision Tree, Random Forest, XGBoost-г туршиж үзээд хамгийн сайн нь ямар вэ гэдгийг сонгох.
+
+Энэ нь hyperparameter tuning-ээс нэг шат ахисан түвшин, учир нь зөв модель + зөв гиперпараметр нийлж байж хамгийн сайн үр дүнд хүрдэг.
+
+
+Hyperparameter Tuning → Тухайн моделиин дотоод тохиргоог сайжруулах.
+Model Selection → Ямар модел хамгийн сайн вэ гэдгийг сонгох
+
+
+
+Data Mismatch
+
+“Data Mismatch” гэдэг нь өгөгдлийн систем, програм, эсвэл өгөгдөл дамжуулах процесс дотор хоёр буюу түүнээс олон өгөгдлийн эх сурвалж хооронд мэдээлэл нь таарахгүй байх, эсвэл хүлээгдэж буй формат, утга, төрөлтэй нийцэхгүй байх тохиолдлыг хэлдэг.
+
+Жишээтэй тайлбарлая:
+
+Өгөгдлийн төрөл (Data type) mismatch
+
+Хүснэгтийн баганад int байх ёстой байтал string өгөгдөл орж ирсэн тохиолдол.
+
+Жишээ: Нас (age) баганад “twenty” гэсэн текст орж ирсэн.
+
+Форматын mismatch
+
+Огноо (date) баганад YYYY-MM-DD формат хүлээгдэж байхад DD/MM/YYYY форматаар өгөгдөл орж ирэх.
+Утгын mismatch
+Хоёр систем нэг утгыг өөрөөр тодорхойлсон.
+
+Жишээ: 
+Gender баганад нэг систем “M/F” гэж хадгалж байхад нөгөө систем “Male/Female” гэж хадгалсан.
+Хэмжээ / урт mismatch
+Текстийн баганад 50 тэмдэгт байхад 100 тэмдэгт орж ирсэн.
+
+Нөлөө:
+
+Програм ажиллахгүй болох
+Мэдээлэл буруу харагдах
+Систем хооронд өгөгдөл дамжуулахад алдаа үүсэх
+
+In some cases, it’s easy to get a large amount of data for training, but this data probably won’t be perfectly representative of the data that will be used in production. For example, suppose you want to create a mobile app to take pictures of flowers and automatically determine their species. You can easily download millions of pictures of flowers on the web, but they won’t be
+perfectly representative of the pictures that will actually be taken using the app on a mobile device. Perhaps you only have 1,000 representative pictures (i.e., actually taken with the app). 
+
+In this case, the most important rule to remember is that both the validation set and the test set must be as representative as possible of the data you expect to use in production, so they should be composed exclusively of representative pictures: you can shuffle them and put half in the validation set and half in the test set (making sure that no duplicates or near-duplicates end up in both sets). After training your model on the web pictures, if you observe that the performance of the model on the validation set is disappointing, you will not know whether this is because your model has overfit the training set, or whether this is just due to the mismatch between the web pictures and the mobile app pictures.

@@ -7,6 +7,11 @@ from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import RandomOverSampler 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
+from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+import tensorflow as ts
+
 
 
 """
@@ -233,3 +238,55 @@ print(classification_report(y_test,y_prediction))
 
 
 # Naive Bayes
+#nb_model = GaussianNB()
+# nb_model.fit(X_train, y_train)
+
+# y_nb_pred = nb_model.predict(X_test)
+# print(classification_report(y_test,y_nb_pred))
+
+# Logistic Regression
+# lg_model = LogisticRegression()
+# lg_model = lg_model.fit(X_train, y_train)
+
+# y_lg_pred = lg_model.predict(X_test)
+# print(classification_report(y_test,y_lg_pred))
+
+# Support Vector Machines (SVM)
+# svm_model = SVC()
+# svm_model = svm_model.fit(X_train, y_train)
+
+# y_svm_pred = svm_model.predict(X_test)
+# print(classification_report(y_test,y_svm_pred))
+
+
+# neural network
+"""
+
+🧠 Гол санаа:
+
+Хүний тархинд нейронууд хоорондоо холбогдож мэдээлэл дамжуулдаг.
+Хиймэл нейрон сүлжээнд хиймэл нейрон гэж нэрлэгдэх тооцооллын нэгжүүд байдаг.
+Эдгээр нейронуудыг давхарга (layer) байдлаар холбож өгснөөр сүлжээ мэдээллийг оруулах → боловсруулалт хийх → гаргах хэлбэрээр ажиллана.
+
+🔑 Бүтэц:
+
+Input layer (орох давхарга)
+    → Өгөгдлийг (зураг, текст, тоо гэх мэт) авна.
+Hidden layers (далд давхарга)
+    → Олон нейронууд математик тооцоо (жингүүд weights, идэвхжүүлэгч функц activation function) хийнэ.
+Output layer (гарах давхарга)
+    → Төгсгөлийн үр дүнг гаргана (жишээ нь: зураг дээр муур уу, нохой юу?).
+
+
+
+
+📌 Жишээ хэрэглээ:
+
+Зураг таних (image recognition)
+Дуу хоолой таних (speech recognition)
+Хэлний орчуулга (machine translation)
+Автомат жолоодлого (self-driving cars)
+
+"""
+
+# tensorflow is an open source library that helps you develop and train your ML models
