@@ -2,6 +2,43 @@ AI, ялангуяа машин сургалт (machine learning) болон com
 
 Товчхондоо: Label гэдэг нь AI-д зааж өгөх “зөв хариу” буюу өгөгдлийг ангилах тэмдэглэгээ юм. AI систем энэ label-үүдийг ашиглаад хэрхэн зөв таамаглахыг сурдаг.
 
+In Machine Learning, especially in supervised learning, the term label has a very specific meaning.
+
+🔑 Label in Machine Learning
+
+A label is the output (target) value that you want the model to predict.
+It is the "answer" in your training data.
+
+In classification:
+Labels are categories (discrete values).
+Example:
+
+Spam detection → spam or not spam
+Image recognition → cat, dog, car
+
+In regression:
+Labels are continuous values (numbers).
+Example:
+
+House price prediction → $120,000
+Temperature forecast → 23.5°C
+
+
+When you train a model, your dataset is usually split into:
+
+Features (X) → input variables (things you use for prediction)
+Labels (y) → output variable (what you want to predict)
+| Feature 1 (Size m²) | Feature 2 (Bedrooms) | Feature 3 (Location Score) | **Label (Price \$)** |
+| ------------------- | -------------------- | -------------------------- | -------------------- |
+| 50                  | 2                    | 0.8                        | 100,000              |
+| 80                  | 3                    | 0.9                        | 160,000              |
+| 120                 | 4                    | 0.95                       | 250,000              |
+
+Here:
+
+Features → size, bedrooms, location
+Label → price
+
 
 Supervised learning гэж юу вэ
 

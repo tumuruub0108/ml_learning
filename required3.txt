@@ -197,13 +197,16 @@ Feature Scaling and Transformation
 
 Feature Scaling гэдэг нь өгөгдлийн багануудын утгуудыг нэг хэмжээс рүү оруулах үйл явц юм.
 Учир нь зарим машин сургалтын алгоритмууд (gradient descent, k-NN, SVM, neural networks) өгөгдлийн утгын хэмжээсээс хамаарч ажилладаг.
+
+machine learning algorithms don’t perform well when the input numerical attributes have very different scales.
 Жишээ:
 
 Байшингийн хэмжээ (square feet): 0 – 5000
-
 Унтлагын өрөөний тоо: 0 – 5
-
 Хэрэв жигдлэхгүй бол том утгатай баганууд илүү их ач холбогдолтой гэж үзэгдэх болно.
+
+There are two common ways to get all attributes to have the same scale: min-
+max scaling and standardization.
 
 Ерөнхий арга
 Min-Max Scaling (0–1 хүртэл хувиргах) (called normalization)
@@ -212,7 +215,9 @@ Max Abs Scaling (Sparse өгөгдөлд тохиромжтой)
 
 Баганын утгыг [-1,1] хүртэл жигдлэнэ.
 
-2️⃣ Feature Transformation (Өгөгдлийг хувиргах)
+2️⃣ Feature transformations
+
+In Machine Learning (ML), a transformation means applying some operation to your data (inputs, features, or sometimes outputs) to make it more suitable for training a model or improving performance
 
 Feature Transformation гэдэг нь өгөгдлийн баганын утгыг шинэ хэлбэрт оруулах үйл явц юм.
 
@@ -248,3 +253,57 @@ X_poly = poly.fit_transform(X)
 
 Scaling → Алгоритмуудыг зөв ажиллуулахад чухал
 Transformation → model гүйцэтгэлийг сайжруулахад ашиглагддаг
+
+the values are shifted
+1️⃣ Mean shift (дундаж шилжүүлэлт)
+
+Мэдээллийн багануудын дундаж (mean) нь 0-д ойр байхаар shift хийгддэг.
+
+Жишээ:
+
+Original feature: [2, 4, 6, 8]
+
+Mean = 5
+
+Shifted (centered) = [2-5, 4-5, 6-5, 8-5] = [-3, -1, 1, 3]
+
+Үүнийг Mean normalization гэж нэрлэдэг.
+
+Учир нь:
+
+ML алгоритмууд (жишээ нь: gradient descent, PCA) нь centered data-д хурдан ажилладаг.
+
+
+
+Min-max scaling
+from sklearn.preprocessing import MinMaxScaler
+min_max_scaler = MinMaxScaler(feature_range=(-1, 1))
+housing_num_min_max_scaled = min_max_scaler.fit_transform(housing_num)
+
+
+
+# Standardization scaling
+std_scaler = StandardScaler()
+housing_num_std_scaled = std_scaler.fit_transform(housing_num)
+
+
+
+💡 what is heavy tail 
+In Machine Learning (ML) and statistics, a heavy tail refers to a probability distribution where the probability of very large values (extreme outcomes) decreases more slowly than it would in a "normal" distribution like the Gaussian.э?
+
+Heavy tail гэдэг нь өгөгдлийн магадлалын тархалт нь маш их утгууд (экстрем утгууд) гарах магадлал их байдаг гэсэн үг юм.
+
+Өөрөөр хэлбэл:
+
+Ердийн (Normal) тархалт → дундажийн орчимд утгууд их төвлөрч, маш том эсвэл маш жижиг утгууд ховор тохиолдоно.
+Heavy-tailed тархалт (жишээ нь: Pareto, Cauchy, Student’s t) → маш том утгууд, онцгой (outlier) утгууд илүү олон гардаг.
+
+📊 Жишээ
+
+Хүн амын орлого: ихэнх нь дундаж орчимд, гэхдээ маш цөөн хэд нь маш өндөр орлоготой байдаг.
+Интернэтийн сүлжээний ачаалал: ихэнх үед хэвийн, гэхдээ хааяа маш их өсөлттэй “spike” гардаг.
+Энэ бол heavy tail үзэгдэл.
+
+
+
+most of Scikit-Learn’s transformers have an inverse_transform() method, making it easy to compute the inverse of their transformations.
