@@ -42,10 +42,22 @@ Label → price
 
 Supervised learning гэж юу вэ
 
+Supervised learning is a type of machine learning in which the algorithm learns from labeled input-output pairs. In other words, for each input in the training dataset, the correct output is already known, and the model tries to learn the mapping from input to output.
+
+Input (Features): The data you feed into the model (e.g., images, text, sensor readings).
+
+Output (Label): The expected result for each input (e.g., “cat” or “dog” for an image, or the price of a house).
+
+The goal is to predict the output for new, unseen inputs based on what the model learned.
+
 Supervised learning гэдэг нь машин сургалтын нэг төрлийн арга бөгөөд мэдээллийн өгөгдөл (data) болон түүний зөв хариу (label) хоёрыг ашиглан модель сургах арга юм. Энгийнээр хэлэхэд, компьютер тухайн өгөгдөлд ямар үр дүн гарахыг урьдчилан мэддэг үед суралцдаг гэсэн үг.
 
 
 1. Classification (Ангилах)
+
+Predicts a discrete label or category.
+Example: Spam email detection (spam or not spam), disease diagnosis (yes/no).
+Output is categorical
 
 Юу вэ: Өгөгдлийг урьдчилан тодорхойлсон ангилалд (category) хуваах процесс.
 Гол зорилго: Өгөгдлийг ямар нэг шалгуур ангилал руу хуваах.
@@ -63,8 +75,14 @@ Multi-class classification (олон ангилалтай)
 
 
 2. Regression (Бууралт)
+Predicts a continuous value.
+Example: Predicting house prices, stock prices, temperature.
+Output is numeric.
+
 Юу вэ: Өгөгдлөөс тоо утга (continuous value) таамаглах процесс.
 Гол зорилго: Өгөгдлийг тоон утгаар урьдчилан таамаглах.
+
+Predict numerical values ​​from data
 
 Жишээ:
 Байшингийн үнэ тооцоолох.
@@ -91,6 +109,12 @@ samples (e.g., “the mileage feature is strongly correlated with price”
 
 
 Unsupervised learning гэж юу вэ
+
+Unsupervised learning is a type of machine learning where the model is trained on unlabeled data—that is, the data does not have predefined outputs or labels. The algorithm tries to find patterns, structure, or relationships in the input data by itself.
+
+Input (Features): Data without labels (e.g., customer data, sensor readings, documents).
+Output: Patterns, groups, or representations discovered by the model.
+The goal is to understand the underlying structure of the data rather than predict a specific output.
 
 Unsupervised learning гэдэг нь машин сургалтын арга бөгөөд өгөгдөлд зөв хариу (label) байхгүй үед компьютерыг суралцуулдаг арга юм. Энгийнээр хэлэхэд, өгөгдөлд ямар дүрэм, бүтэц байгааг урьдчилан заагаагүй үед машин өөрөө олж мэддэг гэсэн үг.
 
