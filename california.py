@@ -6,6 +6,9 @@ from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.metrics.pairwise import rbf_kernel
+from sklearn.linear_model import LinearRegression
 
 # read and show the dataset
 BASE_DIR = Path(__file__).resolve().parent
@@ -39,4 +42,18 @@ X_encoded_df = pd.DataFrame(
 df_house = df_house.drop("ocean_proximity", axis=1)
 df_house = pd.concat([df_house, X_encoded_df], axis=1)
 
-print(df_house.columns)
+# Feature Scaling and Transformation
+
+# Min-max scaling
+min_max_scaler = MinMaxScaler(feature_range=(-1,1))
+housing_num_min_max_scaled = min_max_scaler.fit_transform(housing_num)
+# print(housing_num_min_max_scaled)
+
+# Standardization
+std_scaler = StandardScaler()
+housing_num_std_scaled = std_scaler.fit_transform(housing_num)
+# print(housing_num_std_scaled)
+
+
+age_simil_35 = rbf_kernel(df_house[["housing_median_age"]],[[35]], gamma=0.1)
+print(age_simil_35)
