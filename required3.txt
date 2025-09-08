@@ -58,3 +58,193 @@ RMSE = Root Mean Square Error
 
 RMSE бага байх тусам таамаглал бодит утгад ойр байна гэсэн үг.
 RMSE нь анхны утгын нэгжтэй ижил байдаг (жишээ нь, хэрвээ үнэ төгрөгөөр бол RMSE мөн төгрөгөөр хэмжигдэнэ).
+
+
+
+chapter 2
+The info() method is useful to get a quick description of the data ==> df.info()
+You can find out what categories exist and how many districts belong to each category by using the value_counts() method ==> 
+df["ocean_proximity"].value_counts()
+The describe() method shows a summary of the numerical attributes ==> df.describe()
+show a histogram for each numerical attribute 
+df.hist(bins=50, figsize=(12, 8))
+plt.show()
+
+Scikit-Learn provides a few functions to split datasets into multiple subsets in various ways ==> 
+from sklearn.model_selection import train_test_split
+80% train, 20% test
+train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
+
+
+The following code shows California housing prices: red is expensive, blue is cheap, and larger circles indicate areas with a larger population.
+df_house.plot(kind="scatter", x="longitude", y="latitude", grid=True,
+s=df_house["population"] / 100, label="population",
+c="median_house_value", cmap="jet", colorbar=True,
+legend=True, sharex=False, figsize=(10, 7))
+plt.show()
+
+
+Correlation is a statistical measure that shows how strongly two variables are related to each other.
+If two things change together in a predictable way, they are said to be correlated.
+
+The most common measure is the correlation coefficient (often denoted as r), which ranges from -1 to +1:
+
++1 → perfect positive correlation (when one increases, the other always increases).
+0 → no correlation (no relationship between them).
+-1 → perfect negative correlation (when one increases, the other always decreases)
+
+Example:
+
+Positive correlation: The number of hours studied and exam score → usually, more study hours means higher scores.
+Negative correlation: The speed of a car and the time it takes to reach a destination → higher speed means less time.
+No correlation: Shoe size and intelligence → unrelated.
+
+corr_matrix = df_house.corr(numeric_only=True)
+print(corr_matrix["median_house_value"].sort_values(ascending=False))
+
+You create these new attributes as follows:
+
+df_house["rooms_per_house"] = df_house["total_rooms"] / df_house["households"]
+df_house["bedrooms_ratio"] = df_house["total_bedrooms"] / df_house["total_rooms"]
+df_house["people_per_house"] = df_house["population"] / df_house["households"]
+
+
+Clean the Data
+
+option 1
+Дутуу утга бүхий мөрүүдийг устгана
+housing.dropna(subset=["total_bedrooms"], inplace=True) 
+
+option 2
+Баганыг бүхэлд нь устгана
+housing.drop("total_bedrooms", axis=1)  
+
+option 3
+Fill missing values with the median
+median = housing["total_bedrooms"].median() 
+housing["total_bedrooms"].fillna(median, inplace=True)
+
+
+You decide to go for option 3 since it is the least destructive
+
+option 4
+you will use a handy Scikit-Learn class: SimpleImputer.
+The benefit is that it will store the median value of each feature:
+
+imputer = SimpleImputer(strategy="median")
+housing_num = df_house.select_dtypes(include=[np.number])
+imputer.fit(housing_num)
+
+Since the median can only be computed on numerical attributes, you thenneed to create a copy of the data with only the numerical attributes
+
+The imputer has simply computed the median of each attribute and stored the result in its statistics_ instance variable.
+print(imputer.statistics_)
+
+another option
+print(df_house .median(numeric_only=True).values)
+
+
+Now you can use this “trained” imputer to transform the training set by replacing missing values with the learned medians:
+X = imputer.transform(housing_num)
+
+
+
+output of imputer.transform(housing_num) is a NumPy array: X has neither column names nor index. Luckily, it’s not too hard to wrap X in a DataFrame and recover the column names and index from housing_num:
+housing_tr = pd.DataFrame(X, columns=housing_num.columns,
+index=housing_num.index)
+
+TIP
+There are also more powerful imputers available in the sklearn.impute package (both for
+numerical features only):
+KNNImputer replaces each missing value with the mean of the k-nearest neighbors’values for that feature. The distance is based on all the available features.
+
+
+Handling Text and Categorical Attributes
+
+Most machine learning algorithms prefer to work with numbers, so let’s convert these categories from text to numbers
+we can use Scikit-Learn’s OrdinalEncoder class:
+from sklearn.preprocessing import OrdinalEncoder
+ordinal_encoder = OrdinalEncoder()
+housing_cat_encoded = ordinal_encoder.fit_transform(housing_cat)
+
+option 2
+The new attributes are sometimes called dummy attributes.Scikit-Learn provides a OneHotEncoder class to convert categorical values
+into one-hot vectors:
+
+from sklearn.preprocessing import OneHotEncoder
+# Handling Text and Categorical Attributes
+data = pd.DataFrame({"ocean_proximity": ["NEAR BAY", "INLAND", "NEAR OCEAN", "INLAND"]})
+
+cat_encoder = OneHotEncoder()
+X = df_house[["ocean_proximity"]]
+X_encoded = cat_encoder.fit_transform(X)
+
+X_encoded_df = pd.DataFrame(
+    X_encoded.toarray(),
+    columns=cat_encoder.get_feature_names_out(["ocean_proximity"]),
+    index=df_house.index  # now X_encoded has same number of rows as df_house
+)
+
+df_house = df_house.drop("ocean_proximity", axis=1)
+df_house = pd.concat([df_house, X_encoded_df], axis=1)
+
+
+By default, the output of a OneHotEncoder is a SciPy sparse matrix, instead of a NumPy array:
+the advantage of OneHotEncoder is that it remembers which categories it wastrained on
+
+
+Feature Scaling and Transformation
+
+Feature Scaling гэдэг нь өгөгдлийн багануудын утгуудыг нэг хэмжээс рүү оруулах үйл явц юм.
+Учир нь зарим машин сургалтын алгоритмууд (gradient descent, k-NN, SVM, neural networks) өгөгдлийн утгын хэмжээсээс хамаарч ажилладаг.
+Жишээ:
+
+Байшингийн хэмжээ (square feet): 0 – 5000
+
+Унтлагын өрөөний тоо: 0 – 5
+
+Хэрэв жигдлэхгүй бол том утгатай баганууд илүү их ач холбогдолтой гэж үзэгдэх болно.
+
+Ерөнхий арга
+Min-Max Scaling (0–1 хүртэл хувиргах) (called normalization)
+Standardization (Z-score) Баганыг mean = 0, std = 1 болгоно.
+Max Abs Scaling (Sparse өгөгдөлд тохиромжтой)
+
+Баганын утгыг [-1,1] хүртэл жигдлэнэ.
+
+2️⃣ Feature Transformation (Өгөгдлийг хувиргах)
+
+Feature Transformation гэдэг нь өгөгдлийн баганын утгыг шинэ хэлбэрт оруулах үйл явц юм.
+
+Яагаад хэрэгтэй вэ?
+
+Өгөгдлийн тархалтыг нормалд ойртуулж, сургалтын алгоритмын гүйцэтгэлийг сайжруулах
+Шугаман бус (non-linear) хамаарлыг засах
+
+Ерөнхий арга
+
+Log Transformation
+
+Баруун тийш хазайсан өгөгдлийг жигдлэх
+X_log = np.log1p(X)
+
+Power / Box-Cox Transformation
+Өгөгдлийг Gaussian тархалттай ойртуулах
+
+from sklearn.preprocessing import PowerTransformer
+pt = PowerTransformer()
+X_transformed = pt.fit_transform(X)
+
+Polynomial Features
+Interaction буюу квадрат, куб зэрэг өндөр зэрэглэлийн баганууд нэмэх
+from sklearn.preprocessing import PolynomialFeatures
+poly = PolynomialFeatures(degree=2)
+X_poly = poly.fit_transform(X)
+
+
+
+
+💡 Дүгнэлт:
+
+Scaling → Алгоритмуудыг зөв ажиллуулахад чухал
+Transformation → model гүйцэтгэлийг сайжруулахад ашиглагддаг
