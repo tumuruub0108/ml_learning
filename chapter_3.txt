@@ -1,0 +1,40 @@
+Chapter 3. Classification
+In this chapter we will be using the MNIST dataset, which is a set of 70,000
+small images of digits handwritten by high school students and employees of
+the US Census Bureau.
+
+from sklearn.datasets import fetch_openml
+mnist = fetch_openml('mnist_784', as_frame=False)
+
+
+
+"DESCR"
+A description of the dataset
+
+
+"data"
+The input data, usually as a 2D NumPy array
+
+"target"
+The labels, usually as a 1D NumPy array
+
+
+Training a Binary Classifier
+
+Let’s simplify the problem for now and only try to identify one digit—for example, the number 5. This “5-detector” will be an example of a binary classifier, capable of distinguishing between just two classes, 5 and non-5
+
+Now let’s pick a classifier and train it. A good place to start is with a stochastic gradient descent (SGD, or stochastic GD) classifier, using ScikitLearn’s SGDClassifier class. This classifier is capable of handling very large datasets efficiently
+
+
+
+Performance Measures
+Evaluating a classifier is often significantly trickier than evaluating a regressor
+
+1. Measuring Accuracy Using Cross-Validation
+
+A good way to evaluate a model is to use cross-validation, just as you did in Chapter 2. Let’s use the cross_val_score() function to evaluate our SGDClassifier model, using k-fold cross-validation with three folds.
+
+
+# Confusion Matrices
+A much betterway to evaluate the performance of a classifier is to look at the confusion matrix (CM).
+The general idea of a confusion matrix is to count the number of times instances of class A are classified as class B, for all A/B pairs.
