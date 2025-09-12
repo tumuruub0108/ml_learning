@@ -36,5 +36,94 @@ A good way to evaluate a model is to use cross-validation, just as you did in Ch
 
 
 # Confusion Matrices
-A much betterway to evaluate the performance of a classifier is to look at the confusion matrix (CM).
-The general idea of a confusion matrix is to count the number of times instances of class A are classified as class B, for all A/B pairs.
+A Confusion Matrix is a table used to evaluate the performance of a classification model in machine learning.
+It compares the predicted labels with the actual labels to show how many predictions were correct and how many were wrong
+It usually has four main terms:
+
+True Positive (TP): Model predicted positive, and it was actually positive.
+True Negative (TN): Model predicted negative, and it was actually negative.
+False Positive (FP): Model predicted positive, but it was actually negative (Type I error).
+False Negative (FN): Model predicted negative, but it was actually positive (Type II error).
+
+From this matrix, we can calculate important metrics such as accuracy, precision, recall, and F1-score.
+
+Confusion Matrix (будлианы матриц) нь машин сургалтын classification model-ийн гүйцэтгэлийг үнэлэхэд ашигладаг хүснэгт юм.
+Энэ нь загварын таамагласан үр дүнг бодит үр дүнтэй харьцуулж, зөв болон буруу ангилсан тоонуудыг харуулдаг.
+
+Ихэвчлэн 4 үндсэн хэсэгтэй:
+
+True Positive (TP): Загвар эерэг гэж таамаглаж, үнэхээр эерэг байсан.
+True Negative (TN): Загвар сөрөг гэж таамаглаж, үнэхээр сөрөг байсан.
+False Positive (FP): Загвар эерэг гэж таамагласан ч үнэндээ сөрөг байсан (I төрлийн алдаа).
+False Negative (FN): Загвар сөрөг гэж таамагласан ч үнэндээ эерэг байсан (II төрлийн алдаа).
+
+Энэ матрицаас үнэн зөв (accuracy), нарийвчлал (precision), сэргээн танилт (recall), F1 оноо зэрэг хэмжүүрүүдийг тооцоолдог.
+
+
+
+TP (True Positive): Model correctly predicts positive.
+TN (True Negative): Model correctly predicts negative.
+FP (False Positive): Model incorrectly predicts positive.
+FN (False Negative): Model incorrectly predicts Negative
+
+
+# Accuracy
+The proportion of correctly classified instances (both positive and negative) among all instance
+Бүх өгөгдлөөс зөв ангилсан тохиолдлын хувь.
+
+Formula
+Accuracy=TP+TN / TP+TN+FP+FN+FN
+
+
+✅ Good when classes are balanced.
+❌ Misleading when classes are imbalanced
+
+# Precision
+Out of all predicted positives, how many were actually positive?
+model эерэг гэж таасан бүх тохиолдлоос яг үнэндээ хэд нь үнэхээр эерэг байсан
+
+Formula
+Precision=TP / TP + FP
+	​
+✅ High precision = few false positives.
+Example: In spam detection, precision measures how many emails flagged as spam are really spam.
+
+# Recall
+Out of all actual positives, how many were correctly predicted?
+Бодит эерэг бүх тохиолдлоос хэдийг нь зөв илрүүлсэн бэ?
+
+Formula
+Recall= TP / TP+FN
+
+✅ High recall = few false negatives.
+Example: In medical tests, recall measures how many patients with a disease are correctly identified.
+	​
+# F1-Score
+The harmonic mean of precision and recall. It balances the two, especially when data is imbalanced.
+Precision ба Recall-ийн тэнцвэрийг илэрхийлэх үзүүлэлт.
+
+Formula
+F1 = 2* Precision * Recall / Precision + Recall
+High F1 means a good balance between precision and recall.
+
+Suppose you have a model detecting cancer:
+
+100 patients
+20 actually have cancer
+Model predicts 25 positive cases, of which 15 are correct.
+
+TP = 15 (correctly predicted cancer)
+FP = 10 (healthy predicted as cancer)
+FN = 5 (cancer missed)
+TN = 70 (healthy correctly predicted)
+
+Now:
+Accuracy: (15+70)/100 = 85%
+Precision: 15/(15+10) = 60%
+Recall: 15/(15+5) = 75%
+F1: 2 × (0.6×0.75)/(0.6+0.75) = 66.7%
+
+Unfortunately, you can’t have it both ways: increasing precision reduces
+recall, and vice versa. This is called the precision/recall trade-off.
+
+The Precision/Recall Trade-off
