@@ -3,20 +3,17 @@ Your first task is to use California census data to build a model of housing pri
 Your model should learn from this data and be able to predict the median housing price in any district, given all the other metrics.
 
 PIPELINES
-
 A sequence of data processing components is called a data pipeline.Pipelines are very common in machine learning systems, since there is a lot of data to manipulate and many data transformations to apply.
-Өгөгдөл боловсруулах дараалсан бүрдлүүдийг “data pipeline" гэж нэрлэдэг. Машин сургалтын системд ийм pipeline маш түгээмэл байдаг. Учир нь их хэмжээний өгөгдлийг боловсруулах, олон төрлийн хувиргалт хийх шаардлагатай байдаг.
-
+Өгөгдөл боловсруулах дараалсан бүрдлүүдийг “data pipeline" гэж нэрлэдэг.сМашин сургалтын системд ийм pipeline маш түгээмэл байдаг. Учир нь их хэмжээний өгөгдлийг боловсруулах, олон төрлийн хувиргалт хийх шаардлагатай байдаг.
 
 Pipeline гэдэг нь өгөгдлийг дараалсан алхамуудаар боловсруулах явц.
 
-Жишээ нь:
-
-Түүхий өгөгдөл цуглуулах
-Өгөгдөл цэвэрлэх
-Шинж чанар (features) гаргаж авах
-Загварт оруулах
-→ Энэ бүхийг нэг урсгал (pipeline) болгох нь автоматжуулж, алдаа багасгаж, дахин ашиглахад хялбар болгодог.
+    Жишээ нь:
+        Түүхий өгөгдөл цуглуулах
+        Өгөгдөл цэвэрлэх
+        Шинж чанар (features) гаргаж авах
+    Загварт оруулах:
+         Энэ бүхийг нэг урсгал (pipeline) болгох нь автоматжуулж, алдаа багасгаж, дахин ашиглахад хялбар болгодог.
 
 Components typically run asynchronously. Each component pulls in a large amount of data, processes it, and spits out the result in another data store. Then, some time later, the next component in the pipeline pulls in this data and spits out its own output.
 
@@ -24,89 +21,53 @@ Components typically run asynchronously. Each component pulls in a large amount 
 Synchronous (синхрон) → нэг бүрдэл дуусахад дараагийнх эхэлдэг.
 Asynchronous (асинхрон) → бүрдлүүдийг заавал хүлээлгүй, зэрэгцээд эсвэл бие даан ажиллаж болно.
 
-Жишээ нь, data pipeline дотор:
-
-Өгөгдөл уншиж буй бүрдэл
-Өгөгдөл цэвэрлэж буй бүрдэл
-Загварт оруулж буй бүрдэл
-
+    Жишээ нь, data pipeline дотор:
+        Өгөгдөл уншиж буй бүрдэл
+        Өгөгдөл цэвэрлэж буй бүрдэл
+        Загварт оруулж буй бүрдэл
+        
 Эдгээр нь асинхрон ажиллавал, нэг нь дуусахаар нөгөө нь эхлэхийг хүлээхгүй, өгөгдөл ирэхтэй зэрэгцээд шууд ажиллаж чадна. Энэ нь хурд, үр ашгийг нэмэгдүүлдэг.
-
-
-
-you are now ready to start designing your system.First, determine what kind of training supervision the model will need: is it a
-supervised, unsupervised, semi-supervised, self-supervised, or reinforcement learning task? And is it a classification task, a regression task, or something else? Should you use batch learning or online learning techniques? Before you read on, pause and try to answer these questions for yourself.
 
 
 Select a Performance Measure
 Your next step is to select a performance measure. A typical performance measure for regression problems is the root mean square error (RMSE). It gives an idea of how much error the system typically makes in its predictions, with a higher weight given to large errors.
 
-Notations
-m is 
-
 
 RMSE = Root Mean Square Error
 Энэ нь моделийн таамаглал ба бодит утгын зөрүүг хэмжих хамгийн түгээмэл арга юм.
+    Таамаглал (predicted value) ба бодит утга (actual value) хоорондын зөрүү (error) олно.
+    Тэр зөрүүг квадрат болгоно (ингэснээр сөрөг утгагүй болно).
+    Бүх алдаануудын квадратын дундаж (mean) авна.
+    Эцэст нь дундаж квадратыг дахин үржвэр (root) авна.
 
-Таамаглал (predicted value) ба бодит утга (actual value) хоорондын зөрүү (error) олно.
-Тэр зөрүүг квадрат болгоно (ингэснээр сөрөг утгагүй болно).
-Бүх алдаануудын квадратын дундаж (mean) авна.
-Эцэст нь дундаж квадратыг дахин үржвэр (root) авна.
+    Онцлог:
+        RMSE бага байх тусам таамаглал бодит утгад ойр байна гэсэн үг.
+        RMSE нь анхны утгын нэгжтэй ижил байдаг (жишээ нь, хэрвээ үнэ төгрөгөөр бол RMSE мөн төгрөгөөр хэмжигдэнэ).
 
-
-Онцлог:
-
-RMSE бага байх тусам таамаглал бодит утгад ойр байна гэсэн үг.
-RMSE нь анхны утгын нэгжтэй ижил байдаг (жишээ нь, хэрвээ үнэ төгрөгөөр бол RMSE мөн төгрөгөөр хэмжигдэнэ).
-
-
-
-chapter 2
-The info() method is useful to get a quick description of the data ==> df.info()
-You can find out what categories exist and how many districts belong to each category by using the value_counts() method ==> 
-df["ocean_proximity"].value_counts()
-The describe() method shows a summary of the numerical attributes ==> df.describe()
-show a histogram for each numerical attribute 
-df.hist(bins=50, figsize=(12, 8))
-plt.show()
-
+# Chapter 2
 Scikit-Learn provides a few functions to split datasets into multiple subsets in various ways ==> 
 from sklearn.model_selection import train_test_split
 80% train, 20% test
 train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
 
-
-The following code shows California housing prices: red is expensive, blue is cheap, and larger circles indicate areas with a larger population.
-df_house.plot(kind="scatter", x="longitude", y="latitude", grid=True,
-s=df_house["population"] / 100, label="population",
-c="median_house_value", cmap="jet", colorbar=True,
-legend=True, sharex=False, figsize=(10, 7))
-plt.show()
-
-
 Correlation is a statistical measure that shows how strongly two variables are related to each other.
 If two things change together in a predictable way, they are said to be correlated.
 
 The most common measure is the correlation coefficient (often denoted as r), which ranges from -1 to +1:
-
-+1 → perfect positive correlation (when one increases, the other always increases).
-0 → no correlation (no relationship between them).
--1 → perfect negative correlation (when one increases, the other always decreases)
+    +1 → perfect positive correlation (when one increases, the other always increases).
+    0 → no correlation (no relationship between them).
+    -1 → perfect negative correlation (when one increases, the other always decreases)
 
 Example:
+    Positive correlation: The number of hours studied and exam score → usually, more study hours means higher scores.
+    Negative correlation: The speed of a car and the time it takes to reach a destination → higher speed means less time.
+    No correlation: Shoe size and intelligence → unrelated.
 
-Positive correlation: The number of hours studied and exam score → usually, more study hours means higher scores.
-Negative correlation: The speed of a car and the time it takes to reach a destination → higher speed means less time.
-No correlation: Shoe size and intelligence → unrelated.
-
-corr_matrix = df_house.corr(numeric_only=True)
-print(corr_matrix["median_house_value"].sort_values(ascending=False))
 
 You create these new attributes as follows:
-
-df_house["rooms_per_house"] = df_house["total_rooms"] / df_house["households"]
-df_house["bedrooms_ratio"] = df_house["total_bedrooms"] / df_house["total_rooms"]
-df_house["people_per_house"] = df_house["population"] / df_house["households"]
+    df_house["rooms_per_house"] = df_house["total_rooms"] / df_house["households"]
+    df_house["bedrooms_ratio"] = df_house["total_bedrooms"] / df_house["total_rooms"]
+    df_house["people_per_house"] = df_house["population"] / df_house["households"]
 
 
 Clean the Data
@@ -143,24 +104,19 @@ print(imputer.statistics_)
 another option
 print(df_house .median(numeric_only=True).values)
 
-
 Now you can use this “trained” imputer to transform the training set by replacing missing values with the learned medians:
 X = imputer.transform(housing_num)
-
-
 
 output of imputer.transform(housing_num) is a NumPy array: X has neither column names nor index. Luckily, it’s not too hard to wrap X in a DataFrame and recover the column names and index from housing_num:
 housing_tr = pd.DataFrame(X, columns=housing_num.columns,
 index=housing_num.index)
 
 TIP
-There are also more powerful imputers available in the sklearn.impute package (both for
-numerical features only):
+There are also more powerful imputers available in the sklearn.impute package (both fornumerical features only):
 KNNImputer replaces each missing value with the mean of the k-nearest neighbors’values for that feature. The distance is based on all the available features.
 
 
-Handling Text and Categorical Attributes
-
+# Handling Text and Categorical Attributes  
 Most machine learning algorithms prefer to work with numbers, so let’s convert these categories from text to numbers
 we can use Scikit-Learn’s OrdinalEncoder class:
 from sklearn.preprocessing import OrdinalEncoder
@@ -193,52 +149,56 @@ By default, the output of a OneHotEncoder is a SciPy sparse matrix, instead of a
 the advantage of OneHotEncoder is that it remembers which categories it wastrained on
 
 
-Feature Scaling and Transformation
-
-Feature Scaling гэдэг нь өгөгдлийн багануудын утгуудыг нэг хэмжээс рүү оруулах үйл явц юм.
-Учир нь зарим машин сургалтын алгоритмууд (gradient descent, k-NN, SVM, neural networks) өгөгдлийн утгын хэмжээсээс хамаарч ажилладаг.
+# Feature Scaling and Transformation
+# Feature Scaling
+the numerical features in your dataset have been transformed to be on a similar scale.
+Feature Scaling гэдэг нь өгөгдлийн багануудын утгуудыг нэг хэмжээс рүү оруулах үйл явц юм. Учир нь зарим машин сургалтын алгоритмууд (gradient descent, k-NN, SVM, neural networks) өгөгдлийн утгын хэмжээсээс хамаарч ажилладаг.
 
 machine learning algorithms don’t perform well when the input numerical attributes have very different scales.
-Жишээ:
+    Жишээ:
+        Байшингийн хэмжээ (square feet): 0 – 5000
+        Унтлагын өрөөний тоо: 0 – 5
+Purpose: Prevent features with large values (e.g., income in thousands) from dominating smaller features (e.g., age).
+There are two common ways to get all attributes to have the same scale: min-max scaling and standardization.
+    Ерөнхий арга:
+        Min-Max(Normalization) Scaling (values between 0 and 1)
+        Standardization Баганыг mean = 0, std = 1 болгоно.
+        Max Abs Scaling (Sparse өгөгдөлд тохиромжтой)
+    Баганын утгыг [-1,1] хүртэл жигдлэнэ.
 
-Байшингийн хэмжээ (square feet): 0 – 5000
-Унтлагын өрөөний тоо: 0 – 5
-Хэрэв жигдлэхгүй бол том утгатай баганууд илүү их ач холбогдолтой гэж үзэгдэх болно.
+    Min-max scaling:
+        from sklearn.preprocessing import MinMaxScaler
+        min_max_scaler = MinMaxScaler(feature_range=(-1, 1))
+        housing_num_min_max_scaled = min_max_scaler.fit_transform(housing_num)
+    Standardization scaling:
+        std_scaler = StandardScaler()
+        housing_num_std_scaled = std_scaler.fit_transform(housing_num)
 
-There are two common ways to get all attributes to have the same scale: min-
-max scaling and standardization.
+# Capped data
+means extreme values (outliers) have been limited to a certain threshold.(Хэтэрхий хэтэрхий их/бага утгуудыг (outliers) тодорхой босгонд хязгаарласан.)
 
-Ерөнхий арга
-Min-Max Scaling (0–1 хүртэл хувиргах) (called normalization)
-Standardization (Z-score) Баганыг mean = 0, std = 1 болгоно.
-Max Abs Scaling (Sparse өгөгдөлд тохиромжтой)
+    Example: If most incomes are below $200k but some are $5M, you might cap all values above $200k at $200k.
+    Жишээ: Хэрэв ихэнх орлого 200,000$-оос доош байхад зарим нь 5,000,000$ бол 200,000$-оос дээш утгыг бүгдийг нь 200,000 гэж авдаг.
+    Purpose: Reduce the negative impact of outliers on model training.
+    Зорилго: Outlier-ууд загварыг буруу сургахаас сэргийлэх.
 
-Баганын утгыг [-1,1] хүртэл жигдлэнэ.
-
-2️⃣ Feature transformations
-
+# Feature transformations
 In Machine Learning (ML), a transformation means applying some operation to your data (inputs, features, or sometimes outputs) to make it more suitable for training a model or improving performance
 
 Feature Transformation гэдэг нь өгөгдлийн баганын утгыг шинэ хэлбэрт оруулах үйл явц юм.
+    Яагаад хэрэгтэй вэ:
+        Өгөгдлийн тархалтыг нормалд ойртуулж, сургалтын алгоритмын гүйцэтгэлийг сайжруулах
+        Шугаман бус (non-linear) хамаарлыг засах
+    Ерөнхий арга
+    Log Transformation
+    Баруун тийш хазайсан өгөгдлийг жигдлэх:
+        X_log = np.log1p(X)
+    Power / Box-Cox Transformation
+    Өгөгдлийг Gaussian тархалттай ойртуулах
 
-Яагаад хэрэгтэй вэ?
-
-Өгөгдлийн тархалтыг нормалд ойртуулж, сургалтын алгоритмын гүйцэтгэлийг сайжруулах
-Шугаман бус (non-linear) хамаарлыг засах
-
-Ерөнхий арга
-
-Log Transformation
-
-Баруун тийш хазайсан өгөгдлийг жигдлэх
-X_log = np.log1p(X)
-
-Power / Box-Cox Transformation
-Өгөгдлийг Gaussian тархалттай ойртуулах
-
-from sklearn.preprocessing import PowerTransformer
-pt = PowerTransformer()
-X_transformed = pt.fit_transform(X)
+    from sklearn.preprocessing import PowerTransformer
+    pt = PowerTransformer()
+    X_transformed = pt.fit_transform(X)
 
 Polynomial Features
 Interaction буюу квадрат, куб зэрэг өндөр зэрэглэлийн баганууд нэмэх
@@ -246,64 +206,32 @@ from sklearn.preprocessing import PolynomialFeatures
 poly = PolynomialFeatures(degree=2)
 X_poly = poly.fit_transform(X)
 
-
-
-
-💡 Дүгнэлт:
-
-Scaling → Алгоритмуудыг зөв ажиллуулахад чухал
-Transformation → model гүйцэтгэлийг сайжруулахад ашиглагддаг
+    💡 Дүгнэлт:
+        Scaling → Алгоритмуудыг зөв ажиллуулахад чухал
+        Transformation → model гүйцэтгэлийг сайжруулахад ашиглагддаг
 
 the values are shifted
 1️⃣ Mean shift (дундаж шилжүүлэлт)
-
 Мэдээллийн багануудын дундаж (mean) нь 0-д ойр байхаар shift хийгддэг.
-
-Жишээ:
-
-Original feature: [2, 4, 6, 8]
-
-Mean = 5
-
-Shifted (centered) = [2-5, 4-5, 6-5, 8-5] = [-3, -1, 1, 3]
-
+    Жишээ:
+        Original feature: [2, 4, 6, 8]
+    Mean = 5
+        Shifted (centered) = [2-5, 4-5, 6-5, 8-5] = [-3, -1, 1, 3]  
 Үүнийг Mean normalization гэж нэрлэдэг.
-
-Учир нь:
-
-ML алгоритмууд (жишээ нь: gradient descent, PCA) нь centered data-д хурдан ажилладаг.
+    Учир нь:
+        ML алгоритмууд (жишээ нь: gradient descent, PCA) нь centered data-д хурдан ажилладаг.
 
 
-
-Min-max scaling
-from sklearn.preprocessing import MinMaxScaler
-min_max_scaler = MinMaxScaler(feature_range=(-1, 1))
-housing_num_min_max_scaled = min_max_scaler.fit_transform(housing_num)
-
-
-
-# Standardization scaling
-std_scaler = StandardScaler()
-housing_num_std_scaled = std_scaler.fit_transform(housing_num)
-
-
-
-💡 what is heavy tail 
+# what is heavy tail 
 In Machine Learning (ML) and statistics, a heavy tail refers to a probability distribution where the probability of very large values (extreme outcomes) decreases more slowly than it would in a "normal" distribution like the Gaussian.э?
 
 Heavy tail гэдэг нь өгөгдлийн магадлалын тархалт нь маш их утгууд (экстрем утгууд) гарах магадлал их байдаг гэсэн үг юм.
 
 Өөрөөр хэлбэл:
-
 Ердийн (Normal) тархалт → дундажийн орчимд утгууд их төвлөрч, маш том эсвэл маш жижиг утгууд ховор тохиолдоно.
 Heavy-tailed тархалт (жишээ нь: Pareto, Cauchy, Student’s t) → маш том утгууд, онцгой (outlier) утгууд илүү олон гардаг.
 
-📊 Жишээ
-
-Хүн амын орлого: ихэнх нь дундаж орчимд, гэхдээ маш цөөн хэд нь маш өндөр орлоготой байдаг.
-Интернэтийн сүлжээний ачаалал: ихэнх үед хэвийн, гэхдээ хааяа маш их өсөлттэй “spike” гардаг.
-Энэ бол heavy tail үзэгдэл.
-
-
-
-most of Scikit-Learn’s transformers have an inverse_transform() method, making it easy to compute the inverse of their transformations.
+Жишээ:
+    Хүн амын орлого: ихэнх нь дундаж орчимд, гэхдээ маш цөөн хэд нь маш өндөр орлоготой байдаг.
+    Интернэтийн сүлжээний ачаалал: ихэнх үед хэвийн, гэхдээ хааяа маш их өсөлттэй “spike” гардаг.
+    Энэ бол heavy tail үзэгдэл.
