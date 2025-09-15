@@ -1,16 +1,8 @@
 Chapter 3. Classification
-In this chapter we will be using the MNIST dataset, which is a set of 70,000
-small images of digits handwritten by high school students and employees of
-the US Census Bureau.
-
-from sklearn.datasets import fetch_openml
-mnist = fetch_openml('mnist_784', as_frame=False)
-
-
+In this chapter we will be using the MNIST dataset, which is a set of 70,000 small images of digits handwritten by high school students and employees of the US Census Bureau.
 
 "DESCR"
 A description of the dataset
-
 
 "data"
 The input data, usually as a 2D NumPy array
@@ -18,9 +10,83 @@ The input data, usually as a 2D NumPy array
 "target"
 The labels, usually as a 1D NumPy array
 
+# what is class in machine learning
+In machine learning, a class is simply a category or label that a data point can belong to in a classification problem.
+Think of it as the “type” or “group” you want your model to predict.
 
-Training a Binary Classifier
+🔹 Key Points About Classes
+	Discrete categories
+		Classes are distinct labels, not continuous numbers.
+		Example: {“spam”, “not spam”}, {“cat”, “dog”, “rabbit”}, {“disease”, “healthy”}
+	Depends on the problem
+		The number of classes depends on the specific classification task:
+			Binary classification → 2 classes (e.g., Yes/No)
+			Multi-class classification → 3 or more classes (e.g., Cat/Dog/Rabbit)
+			Multi-label classification → each instance can belong to multiple classes at the same time
+	Used for training
+		During training, the model learns to map input features to the correct class.
+		The classes are often represented as numbers internally, e.g., 0, 1, 2…
 
+| Task               | Input            | Classes                     |
+| ------------------ | ---------------- | --------------------------- |
+| Email filtering    | Email content    | Spam, Not Spam              |
+| Fruit recognition  | Image of a fruit | Apple, Banana, Orange       |
+| Sentiment analysis | Text review      | Positive, Neutral, Negative |
+
+
+
+We use classification in machine learning because many real-world problems involve making decisions or assigning things into categories (classes) rather than predicting continuous values.
+
+🔑 Reasons why we do classification:
+	Nature of the Problem
+		Many tasks are inherently categorical:
+			Spam ❌ vs. Not Spam ✅
+			Fraudulent 💳 vs. Legitimate transaction
+			Disease present 🩺 vs. not present
+			Sentiment: Positive 🙂, Negative 🙁, Neutral 😐
+	Decision-Making
+		In real applications, what we care about is the final decision, not just probabilities. Example: An email system has to decide show in inbox or move to spam
+	Interpretability
+		Classification provides clear labels that are easy for humans to understand and act on.
+	Efficiency in Action
+		ystems can take automated actions once a class is determined. Example: If a transaction is classified as fraud → block it.
+	Generalization of Knowledge
+		Classification allows machines to generalize from past labeled examples to unseen ones.
+
+🧠 Difference vs. Regression
+	Regression → predicts how much (continuous value).
+	Classification → predicts which category (discrete label).
+
+	Example:
+		Regression: "What is the temperature tomorrow?" → 27.3°C
+		Classification: "Will it rain tomorrow?" → Yes/No
+		
+# Binary Classifier
+A binary classifier is a type of machine learning model that predicts one of two possible classes (also called labels) for a given input.
+
+It’s the simplest form of classification because there are only two outcomes: usually labeled as 0 or 1, True or False, Yes or No, Positive or Negative, etc.
+
+🔹 How it works
+		The model takes input features X (like age, income, symptoms, pixel values, etc.).
+		it outputs a probability P(y=1∣X) that the input belongs to class 1.
+		A threshold (usually 0.5) is used to assign a class:
+			If P(y=1∣X) ≥ 0.5, predict class 1
+			If P(y=1∣X) < 0.5, predict class 0
+	examples
+	| Problem              | Input                  | Output                     |
+	| -------------------- | ---------------------- | -------------------------- |
+	| Email spam detection | Email text             | Spam (1) / Not spam (0)    |
+	| Disease diagnosis    | Symptoms, test results | Sick (1) / Healthy (0)     |
+	| Fraud detection      | Transaction details    | Fraud (1) / Legitimate (0) |
+	| Credit approval      | Applicant info         | Approve (1) / Reject (0)   |
+
+	Key Points
+		Works only for two classes.
+		Outputs can be hard labels (0/1) or probabilities (between 0 and 1).
+		Thresholds can be adjusted if you want to be more sensitive (catch all positives) or specific (avoid false alarms).
+
+
+# Training a Binary Classifier
 Let’s simplify the problem for now and only try to identify one digit—for example, the number 5. This “5-detector” will be an example of a binary classifier, capable of distinguishing between just two classes, 5 and non-5
 
 Now let’s pick a classifier and train it. A good place to start is with a stochastic gradient descent (SGD, or stochastic GD) classifier, using ScikitLearn’s SGDClassifier class. This classifier is capable of handling very large datasets efficiently
@@ -31,7 +97,6 @@ Performance Measures
 Evaluating a classifier is often significantly trickier than evaluating a regressor
 
 1. Measuring Accuracy Using Cross-Validation
-
 A good way to evaluate a model is to use cross-validation, just as you did in Chapter 2. Let’s use the cross_val_score() function to evaluate our SGDClassifier model, using k-fold cross-validation with three folds.
 
 
@@ -51,7 +116,6 @@ Confusion Matrix (будлианы матриц) нь машин сургалт�
 Энэ нь загварын таамагласан үр дүнг бодит үр дүнтэй харьцуулж, зөв болон буруу ангилсан тоонуудыг харуулдаг.
 
 Ихэвчлэн 4 үндсэн хэсэгтэй:
-
 True Positive (TP): Загвар эерэг гэж таамаглаж, үнэхээр эерэг байсан.
 True Negative (TN): Загвар сөрөг гэж таамаглаж, үнэхээр сөрөг байсан.
 False Positive (FP): Загвар эерэг гэж таамагласан ч үнэндээ сөрөг байсан (I төрлийн алдаа).
@@ -126,4 +190,184 @@ F1: 2 × (0.6×0.75)/(0.6+0.75) = 66.7%
 Unfortunately, you can’t have it both ways: increasing precision reduces
 recall, and vice versa. This is called the precision/recall trade-off.
 
-The Precision/Recall Trade-off
+# The Precision/Recall Trade-off
+# Threshold
+threshold is a cutoff value used to make decisions based on model outputs.
+Most machine learning models, especially classification models, output probabilities or scores rather than hard class labels. The threshold determines how those probabilities are converted into final predictions.
+
+cutoff = “босго утга"
+
+Example: Binary Classification
+	Suppose a model predicts the probability that an email is spam:
+		Email A → 0.9 (90% spam)
+		Email B → 0.4 (40% spam)
+	If the threshold is set to 0.5:
+		Email A → classified as spam (0.9 ≥ 0.5)
+		Email B → classified as not spam (0.4 < 0.5)
+	If we change the threshold to 0.3:
+		Email A → still spam
+		Email B → now also classified as spam
+
+
+Machine Learning-д (threshold = cutoff):
+	Хэрэв магадлал 0.5-аас дээш бол → эерэг (Positive).
+		0.5-аас бага бол → сөрөг (Negative).
+		Энэ 0.5 гэдэг нь cutoff (threshold).
+	Ердийн амьдрал дээр:
+		Их сургуулийн шалгалтанд 60 оноо авах ёстой бол:
+			60-аас дээш → тэнцсэн
+			60-аас доош → тэнцээгүй
+		Энэ 60 оноо = cutoff цэг.
+
+Why Threshold Matters
+	Higher threshold → model is stricter (fewer positives, more false negatives).
+	Lower threshold → model is more lenient (more positives, more false positives)
+
+Threshold = the decision boundary that converts model scores/probabilities into class labels.
+
+you can call its decision_function() method, which returns a score for each instance, and then use any threshold
+you want to make predictions based on those scores:
+
+>>> y_scores = sgd_clf.decision_function([some_digit])
+>>> y_scores
+array([2164.22030239])
+
+>>> threshold = 0
+>>> y_some_digit_pred = (y_scores > threshold)
+array([ True])
+
+The SGDClassifier uses a threshold equal to 0, so the preceding code returns
+the same result as the predict() method (i.e., True). Let’s raise the threshold:
+
+>>> threshold = 3000
+>>> y_some_digit_pred = (y_scores > threshold)
+>>> y_some_digit_pred
+array([False])
+
+This confirms that raising the threshold decreases recall.
+
+How do you decide which threshold to use? First, use the cross_val_predict() function to get the scores of all instances in the training set, but this time specify that you want to return decision scores instead of predictions:
+
+y_scores = cross_val_predict(sgd_clf, X_train, y_train_5, cv=3, method="decision_function")
+
+With these scores, use the precision_recall_curve() function to compute precision and recall for all possible thresholds (the function adds a last precision of 0 and a last recall of 1, corresponding to an infinite threshold):
+
+from sklearn.metrics import precision_recall_curve
+precisions, recalls, thresholds = precision_recall_curve(y_train_5, y_scores)
+
+
+# The ROC Curve
+The receiver operating characteristic (ROC) curve is another common tool used with binary classifiers. It is very similar to the precision/recall curve, but instead of plotting precision versus recall, the ROC curve plots the true positive rate (another name for recall) against the false positive rate (FPR). The FPR (also called the fall-out) is the ratio of negative instances that are
+incorrectly classified as positive. It is equal to 1 – the true negative rate (TNR), which is the ratio of negative instances that are correctly classified as negative. The TNR is also called specificity. Hence, the ROC curve plots sensitivity (recall) versus 1 – specificity.
+
+
+
+
+TIP
+Since the ROC curve is so similar to the precision/recall (PR) curve, you may wonder how to decide which one to use. As a rule of thumb, you should prefer the PR curve whenever the positive class is rare or when you care more about the false positives than the false negatives. Otherwise, use the ROC curve. For example, looking at the previous ROC curve (and the ROC AUC score), you may think that the classifier is really good. But this is mostly because there are few positives (5s) compared to the negatives (non-5s). In contrast, the PR curve makes it clear that the classifier has room for improvement: the curve could really be closer to the top-right corner
+
+
+You now know how to train binary classifiers, choose the appropriate metric for your task, evaluate your classifiers using cross-validation, select the precision/recall trade-off that fits your needs, and use several metrics and curves to compare various models.
+
+# Multiclass Classification
+
+Multiclass classification is a type of classification in machine learning where a model predicts one of three or more possible classes for each input.
+
+Unlike binary classification, which has only two classes, multiclass classification deals with multiple categories.
+
+🔹 Key Points
+	Single label per instance
+		Each data point belongs to exactly one class out of all possible classes.
+
+	Examples of multiclass problems
+		| Problem                       | Input            | Classes                      |
+		| ----------------------------- | ---------------- | ---------------------------- |
+		| Handwritten digit recognition | Image of a digit | 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 |
+		| Fruit classification          | Fruit image      | Apple, Banana, Orange, Mango |
+		| Sentiment analysis            | Text review      | Positive, Neutral, Negative  |
+
+	Output format
+		Models usually output probabilities for each class, summing to 1.
+		The predicted class is the one with the highest probability
+
+
+Example
+For a fruit image:
+
+| Class  | Probability |
+| ------ | ----------- |
+| Apple  | 0.10        |
+| Banana | 0.70        |
+| Orange | 0.20        |
+The model predicts Banana, because it has the highest probability.
+
+
+# Multilabel Classification
+Multilabel classification is a type of machine learning problem where each instance (data point) can belong to multiple classes at the same time, instead of being restricted to just one.
+
+📌 Example
+	Binary classification: Is this email spam or not spam? (one label only)
+	Multiclass classification: What digit is this image? (0–9, only one correct digit)
+	Multilabel classification: What topics does this news article cover?
+		Possible labels: ["Politics", "Economy", "Sports", "Technology"]
+		A single article could be tagged as ["Politics", "Economy"] at the same time.
+
+🔑 Characteristics
+	Multiple labels per instance (not mutually exclusive).
+	Output is a vector of labels (e.g., [1, 0, 1, 0] meaning it belongs to class 1 and 3, but not 2 or 4).
+	Evaluation metrics differ from standard classification (accuracy, precision, recall, F1 are often adapted to multilabel cases).
+
+⚙️ How it works
+There are a few strategies to handle multilabel classification:
+	Problem Transformation Methods
+		Binary Relevance: Train one binary classifier per label (e.g., one model predicts "Sports or not", another predicts "Politics or not").
+		Classifier Chains: Predict labels sequentially, where the prediction of one label can influence the next.
+		Label Powerset: Treat every unique combination of labels as one class (can be infeasible with many labels).
+
+	Algorithm Adaptation
+		Some algorithms are adapted directly to handle multilabel outputs, e.g.:
+			Neural networks with a sigmoid activation for each output node.
+			Decision trees/Random forests with multilabel extensions.
+
+
+
+
+			
+			
+# Multioutput Classification
+Multioutput classification (also called multi-output multiclass classification) is a type of supervised learning where:
+	Each instance (data point) has multiple target variables (outputs).
+	Each target is itself a classification problem.
+
+In other words, you predict several labels at once, but each label comes from its own set of possible classes.
+
+📌 Example
+Handwritten digits (multioutput)
+	Input: an image of a handwritten digit.
+	Outputs:
+		First classifier predicts the digit value (0–9).
+		Second classifier predicts whether the digit is even/odd.
+		Third classifier predicts whether the digit is prime or not.
+		→ Multiple classification outputs for the same input.
+Weather prediction
+	Input: historical weather data.
+	Outputs:
+		Temperature level (Low/Medium/High).
+		Rain chance (Yes/No).
+		Wind speed category (Weak/Strong).
+
+Each output is a separate classification problem, but the model predicts them simultaneously.
+
+🔑 Difference from Multilabel Classification
+| Feature             | Multilabel Classification                                  | Multioutput Classification                                  |
+| ------------------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
+| Output type         | One set of labels (usually binary, like tags)              | Multiple classification tasks (can be binary or multiclass) |
+| Labels per instance | Instance can belong to **multiple labels** (not exclusive) | Instance has **multiple target variables**                  |
+| Example             | A news article tagged as `[Politics, Sports]`              | Predicting `[Weather=Sunny, Temp=Hot, Wind=Strong]`         |
+
+
+👉 Multilabel is actually a special case of multioutput, where each output is just binary (0/1).
+
+⚙️ How it works
+Independent models: Train a separate classifier for each output.
+Joint models: Train one model that outputs a vector of predictions. Neural networks often do this naturally (multi-output heads).
