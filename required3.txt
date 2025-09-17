@@ -73,17 +73,17 @@ You create these new attributes as follows:
 Clean the Data
 
 option 1
-Дутуу утга бүхий мөрүүдийг устгана
-housing.dropna(subset=["total_bedrooms"], inplace=True) 
+    Дутуу утга бүхий мөрүүдийг устгана
+    housing.dropna(subset=["total_bedrooms"], inplace=True) 
 
 option 2
-Баганыг бүхэлд нь устгана
-housing.drop("total_bedrooms", axis=1)  
+    Баганыг бүхэлд нь устгана
+    housing.drop("total_bedrooms", axis=1)  
 
 option 3
-Fill missing values with the median
-median = housing["total_bedrooms"].median() 
-housing["total_bedrooms"].fillna(median, inplace=True)
+    Fill missing values with the median
+    median = housing["total_bedrooms"].median() 
+    housing["total_bedrooms"].fillna(median, inplace=True)
 
 
 You decide to go for option 3 since it is the least destructive
@@ -181,6 +181,52 @@ means extreme values (outliers) have been limited to a certain threshold.(Хэт
     Жишээ: Хэрэв ихэнх орлого 200,000$-оос доош байхад зарим нь 5,000,000$ бол 200,000$-оос дээш утгыг бүгдийг нь 200,000 гэж авдаг.
     Purpose: Reduce the negative impact of outliers on model training.
     Зорилго: Outlier-ууд загварыг буруу сургахаас сэргийлэх.
+
+# clustering
+Clustering is the process of grouping similar data points together based on their features, without using labeled data.
+When data is clustered, it means the algorithm has divided the dataset into groups (called clusters) such that:
+
+    Points in the same cluster are more similar to each other.
+    Points in different clusters are more different from each other.
+
+Example:
+    Suppose you have data about customers:
+        Age
+        Income
+        Spending habits
+
+    A clustering algorithm might group them into:
+        Cluster 1: Young, low income, low spending
+
+        Cluster 2: Middle-aged, medium income, medium spending
+
+        Cluster 3: Older, high income, high spending
+        
+No labels are provided—the algorithm “discovers” these groups automatically.
+
+# Stratified
+In machine learning, “stratified” usually refers to stratified sampling or stratified splitting, which is a way of dividing data into train/test (or folds in cross-validation) while preserving the distribution of labels or classes.
+
+📊 Example:
+Suppose you have a dataset with 100 samples:
+    80 are class A
+
+    20 are class B
+
+If you do a random split into 80% training and 20% testing, you might end up with:
+    Train: 70 A, 10 B
+
+    Test: 10 A, 10 B (imbalanced compared to original)
+
+But with a stratified split, the ratio is preserved:
+    Train: 64 A, 16 B (still 80:20 ratio)
+
+    Test: 16 A, 4 B (still 80:20 ratio)
+
+# Why it’s important:
+    Prevents bias in model evaluation.
+    Especially useful for imbalanced datasets (where some classes are rare).
+    Helps the model generalize better and ensures fair testing.
 
 # Feature transformations
 In Machine Learning (ML), a transformation means applying some operation to your data (inputs, features, or sometimes outputs) to make it more suitable for training a model or improving performance
