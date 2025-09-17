@@ -75,7 +75,7 @@ Supervised learning is a type of machine learning in which the algorithm learns 
     Output (Label): The expected result for each input (e.g., “cat” or “dog” for an image, or the price of a house).
     The goal is to predict the output for new, unseen inputs based on what the model learned.
 
-# Classification (Ангилах)
+# Classification
     Predicts a discrete label or category.
     Example: Spam email detection (spam or not spam), disease diagnosis (yes/no).
     Output is categorical
@@ -94,7 +94,7 @@ Supervised learning is a type of machine learning in which the algorithm learns 
 
 
 
-# Regression (Бууралт)
+# Regression
     Predicts a continuous value.
     Example: Predicting house prices, stock prices, temperature.
     Output is numeric.
