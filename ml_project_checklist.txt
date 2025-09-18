@@ -7,11 +7,11 @@ This checklist can guide you through your machine learning projects. There are e
     Knowing the objective is important because it will determine how you frame the problem, which algorithms you will select, which performance measure you will use to evaluate your model, and how much effort you will spend tweaking it.
 
     It usually involves:
-        Defining the objective – What exactly do we want to predict or classify?
-        Understanding the context – Why is this problem important? Who will use the solution?(context=нөхцөл, хам сэдэв)
-        Identifying inputs and outputs – What data do we have (features) and what do we want to produce (target)?
-        Considering constraints – Time, cost, accuracy, interpretability.
-        Relating to the big picture – How does solving this problem fit into the organization’s or project’s larger goals?(Энэ асуудлыг шийдэх нь байгууллага эсвэл төсөлд хэрхэн үнэ цэнэ нэмэх вэ?)
+        Defining the objective: What exactly do we want to predict or classify?
+        Understanding the context: Why is this problem important? Who will use the solution?(context=нөхцөл, хам сэдэв)
+        Identifying inputs and outputs: What data do we have (features) and what do we want to produce (target)?
+        Considering constraints: Time, cost, accuracy, interpretability.
+        Relating to the big picture: How does solving this problem fit into the organization’s or project’s larger goals?(Энэ асуудлыг шийдэх нь байгууллага эсвэл төсөлд хэрхэн үнэ цэнэ нэмэх вэ?)
 
     Example: Instead of just saying “build a model”, we might frame it as:
     “We want to predict customer churn within 30 days to reduce losses, using customer behavior data, because retaining customers is cheaper than acquiring new ones.”(“30 хоногийн дотор хэрэглэгч үйлчилгээгээ болих эсэхийг урьдчилан таамаглаж, алдагдлыг бууруулах. Учир нь одоо байгаа хэрэглэгчийг хадгалах нь шинэ хэрэглэгч татахаас хямд байдаг.)
@@ -20,9 +20,9 @@ This checklist can guide you through your machine learning projects. There are e
     collecting the raw information you need to solve your machine learning problem. This is the first step in any data science or machine learning projec
 
     It usually involves:
-        Identifying sources – Where can the data come from? (Databases, CSV files, APIs, sensors, web scraping, public datasets, etc.)
-        Accessing the data – Downloading, querying, or connecting to the source.
-        Verifying the data – Checking the format, completeness, and reliability.
+        Identifying sources: Where can the data come from? (Databases, CSV files, APIs, sensors, web scraping, public datasets, etc.)
+        Accessing the data: Downloading, querying, or connecting to the source.
+        Verifying the data: Checking the format, completeness, and reliability.
 
 3. Explore the data to gain insights.(examining and analyzing the dataset)
     It usually involves:
@@ -39,22 +39,22 @@ This checklist can guide you through your machine learning projects. There are e
     cleaning, transforming, and organizing the raw data so that machine learning models can more easily detect useful patterns.
 
     This step is often called Data Preparation or Data Preprocessing, and it usually includes:
-        Cleaning the data – removing duplicates, handling missing values, fixing errors.
-        Feature scaling – normalizing or standardizing values (e.g., so large numbers don’t dominate small ones).
-        Encoding categorical variables – converting text categories (like “Male/Female”) into numerical form.
-        Feature engineering – creating new useful features (e.g., combining date columns into “age”).
-        Splitting the dataset – into training, validation, and testing sets.
+        Cleaning the data: removing duplicates, handling missing values, fixing errors.
+        Feature scaling: normalizing or standardizing values (e.g., so large numbers don’t dominate small ones).
+        Encoding categorical variables: converting text categories (like “Male/Female”) into numerical form.
+        Feature engineering: creating new useful features (e.g., combining date columns into “age”).
+        Splitting the dataset: into training, validation, and testing sets.
 
 Example: If you have raw customer data with missing ages and categorical “Yes/No” fields, you must first fill or remove missing ages, convert “Yes/No” into 0/1, and scale numerical features before training a model.
 
 5. Explore many different models and shortlist the best ones.
     trying out a variety of machine learning algorithms (models), comparing their performance, and then keeping only the top-performing ones for further tuning.(олон төрлийн машин сургалтын загваруудыг туршиж үзээд, гүйцэтгэл хамгийн сайн гарсан хэдийг нь үлдээнэ гэсэн үг.)
     This stage is often called Model Selection. It usually includes:
-        Trying different algorithms – e.g., Linear Regression, Decision Trees, Random Forest, SVM, Neural Networks, etc.
-        Training and evaluating each model – using metrics like accuracy, precision, recall, F1-score, RMSE, etc.
-        Cross-validation – to ensure the model works well on unseen data.
-        Comparing trade-offs – accuracy vs. speed, interpretability vs. complexity.
-        Shortlisting – select the best 2–3 models to optimize further (hyperparameter tuning).
+        Trying different algorithms: e.g., Linear Regression, Decision Trees, Random Forest, SVM, Neural Networks, etc.
+        Training and evaluating each model: using metrics like accuracy, precision, recall, F1-score, RMSE, etc.
+        Cross-validation: to ensure the model works well on unseen data.
+        Comparing trade-offs: accuracy vs. speed, interpretability vs. complexity.
+        Shortlisting: select the best 2–3 models to optimize further (hyperparameter tuning).
 
 Example: For a classification problem, you might try Logistic Regression, Random Forest, and Gradient Boosting. If Random Forest and Gradient Boosting perform best, you keep those two for further fine-tuning.
 
@@ -67,9 +67,9 @@ improving the selected machine learning models by adjusting their parameters and
             Use techniques like Grid Search, Random Search, or Bayesian Optimization.
             Goal: squeeze out the maximum performance from each model.(агвараас хамгийн өндөр гүйцэтгэлийг гаргах)
         Combining models (Ensemble Learning):
-            Bagging (e.g., Random Forest) – combine models trained on different subsets of data.
-            Boosting (e.g., XGBoost, LightGBM) – sequentially improve weak models.
-            Stacking – combine different types of models and use a meta-model to make the final prediction.
+            Bagging (e.g., Random Forest): combine models trained on different subsets of data.
+            Boosting (e.g., XGBoost, LightGBM): sequentially improve weak models.
+            Stacking: combine different types of models and use a meta-model to make the final prediction.
 
 Example: If Random Forest and Gradient Boosting both perform well, you can fine-tune their hyperparameters, then combine them in a stacking ensemble to get even better results.
 
@@ -77,12 +77,12 @@ Example: If Random Forest and Gradient Boosting both perform well, you can fine-
     communicating the results of your machine learning project clearly and effectively to your audience. This can be to colleagues, stakeholders, or clients.(машин сургалтын төслийн үр дүнг тодорхой, ойлгомжтой байдлаар бусдад танилцуулахыг хэлнэ. Энэ нь хамтран ажиллагсад, менежерүүд, эсвэл үйлчлүүлэгчдэд байж болно.)
 
     Key points:
-        Summarize the problem – Briefly restate what problem you solved.(Ямар асуудлыг шийдсэнээ товч дүгнэх.)
-        Describe your approach – Explain data preparation, model selection, tuning, and any ensemble methods.(Өгөгдөл бэлтгэх, загвар сонгох, тохируулга, ensemble арга хэрэглэсэн тухай.)
-        Show results – Present metrics like accuracy, F1-score, RMSE, or visualizations (confusion matrix, feature importance, ROC curves).
-        Highlight insights – What did you learn from the data and the model? Any surprises or patterns?(Өгөгдөл ба загвараас ямар үр дүн гарсан, ямар шинэ зүйл олж мэдсэн.)
-        Provide recommendations – Suggest next steps, business actions, or further improvements.
-        Make it understandable – Avoid excessive jargon; use visuals, charts, and tables to clarify.(Хэт мэргэжлийн хэллэгээс зайлсхийх; визуализаци, график, хүснэгт ашиглах.)
+        Summarize the problem: Briefly restate what problem you solved.(Ямар асуудлыг шийдсэнээ товч дүгнэх.)
+        Describe your approach: Explain data preparation, model selection, tuning, and any ensemble methods.(Өгөгдөл бэлтгэх, загвар сонгох, тохируулга, ensemble арга хэрэглэсэн тухай.)
+        Show results: Present metrics like accuracy, F1-score, RMSE, or visualizations (confusion matrix, feature importance, ROC curves).
+        Highlight insights: What did you learn from the data and the model? Any surprises or patterns?(Өгөгдөл ба загвараас ямар үр дүн гарсан, ямар шинэ зүйл олж мэдсэн.)
+        Provide recommendations: Suggest next steps, business actions, or further improvements.
+        Make it understandable: Avoid excessive jargon; use visuals, charts, and tables to clarify.(Хэт мэргэжлийн хэллэгээс зайлсхийх; визуализаци, график, хүснэгт ашиглах.)
 8. Launch, monitor, and maintain your system.
     refers to taking your machine learning model from development into a live production environment and ensuring it continues to work effectively over time.
 

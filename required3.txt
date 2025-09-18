@@ -72,18 +72,47 @@ You create these new attributes as follows:
 
 Clean the Data
 
-option 1
+inplace=True
+    Modify the original DataFrame directly.
+    If inplace=False (default), it would return a new DataFrame without changing original DataFrame.
+
+option 1: dropna
     Дутуу утга бүхий мөрүүдийг устгана
     housing.dropna(subset=["total_bedrooms"], inplace=True) 
 
-option 2
-    Баганыг бүхэлд нь устгана
-    housing.drop("total_bedrooms", axis=1)  
+    Use when:
+        Only a few rows are missing data.
 
-option 3
+        The missing column/row is not critical or you have enough data left.
+
+        You want to remove NaNs specifically.
+
+    ✅ Pros: Simple, removes incomplete data.
+    ❌ Cons: Can reduce dataset size too much if missing values are frequent.
+
+option 2: drop
+    Баганыг бүхэлд нь устгана
+    housing.drop("total_bedrooms", axis=1)
+
+    Use when:
+        Columns or rows are irrelevant, not missing.
+
+        Example: ID columns, text columns that won’t be used in ML.
+
+    ✅ Pros: Removes irrelevant features, keeps dataset clean.
+    ❌ Cons: Doesn’t handle missing values unless combined with dropna().
+
+option 3: fillna
     Fill missing values with the median
     median = housing["total_bedrooms"].median() 
     housing["total_bedrooms"].fillna(median, inplace=True)
+
+    Use when:
+        Column is important for analysis/model.
+
+        You cannot afford to lose rows.
+
+        Impute missing values with a statistic or method.
 
 
 You decide to go for option 3 since it is the least destructive
