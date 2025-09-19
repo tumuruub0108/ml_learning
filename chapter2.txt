@@ -239,30 +239,44 @@ the values are shifted
         ML алгоритмууд (жишээ нь: gradient descent, PCA) нь centered data-д хурдан ажилладаг.
 
 
-# what is heavy tail 
-In Machine Learning (ML) and statistics, a heavy tail refers to a probability distribution where the probability of very large values (extreme outcomes) decreases more slowly than it would in a "normal" distribution like the Gaussian.э?
+# Custom Transformers
+    In Scikit-Learn, a Transformer is an object that:
+        Learns something from data using .fit() (e.g., mean, scaling parameters).
+        Applies a transformation to the data using .transform().
+        Can do both in one step with .fit_transform().
 
-Heavy tail гэдэг нь өгөгдлийн магадлалын тархалт нь маш их утгууд (экстрем утгууд) гарах магадлал их байдаг гэсэн үг юм.
+    Examples of built-in transformers:
+        StandardScaler → standardizes features.
+        SimpleImputer → fills missing values.
+        OneHotEncoder → encodes categorical features.
 
-Өөрөөр хэлбэл:
-Ердийн (Normal) тархалт → дундажийн орчимд утгууд их төвлөрч, маш том эсвэл маш жижиг утгууд ховор тохиолдоно.
-Heavy-tailed тархалт (жишээ нь: Pareto, Cauchy, Student’s t) → маш том утгууд, онцгой (outlier) утгууд илүү олон гардаг.
+They are the building blocks of preprocessing pipelines.
 
-Жишээ:
-    Хүн амын орлого: ихэнх нь дундаж орчимд, гэхдээ маш цөөн хэд нь маш өндөр орлоготой байдаг.
-    Интернэтийн сүлжээний ачаалал: ихэнх үед хэвийн, гэхдээ хааяа маш их өсөлттэй “spike” гардаг.
-    Энэ бол heavy tail үзэгдэл.
+# Why Write Custom Transformers?
+Real datasets are messy. Pre-built tools don’t always fit your domain-specific needs.
+That’s why you might need custom transformers.
+
+    ✅ Reasons:
+        Custom cleanup operations
+            Remove unwanted symbols (e.g., $ in price).
+            Fix invalid values (negative ages).
+
+        Custom feature engineering
+            Derive new features (e.g., rooms_per_house = total_rooms / households).
+            Group rare categories into “Other.”
+
+        Combining specific attributes
+            Interaction features (e.g., income × education).
+            Aggregate features (e.g., population per household).
+
+        Reusable in Pipelines
+            Once written, your custom transformer can be dropped into a Scikit-Learn Pipeline or ColumnTransformer.
+            Keeps preprocessing and training consistent.
+
+# Transformation Pipelines
 
 
-
-
-
-
-
-
-
-
-Select a Performance Measure
+# Select a Performance Measure
 Your next step is to select a performance measure. A typical performance measure for regression problems is the root mean square error (RMSE). It gives an idea of how much error the system typically makes in its predictions, with a higher weight given to large errors.
 
 

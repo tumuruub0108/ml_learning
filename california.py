@@ -10,6 +10,8 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.metrics.pairwise import rbf_kernel
 from sklearn.linear_model import LinearRegression
 from pandas.plotting import scatter_matrix
+from sklearn.preprocessing import FunctionTransformer
+from sklearn.pipeline import make_pipeline
 
 # read and show the dataset
 BASE_DIR = Path(__file__).resolve().parent
@@ -114,6 +116,7 @@ housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
 
 
 # Feature Scaling and Transformation
+
 # option 1  Min-max scaling (many people call this normalization)
 min_max_scaler = MinMaxScaler(feature_range=(-1, 1))
 housing_num_min_max_scaled = min_max_scaler.fit_transform(housing_num)
@@ -124,6 +127,24 @@ housing_num_std_scaled = std_scaler.fit_transform(housing_num)
 
 age_simil_35 = rbf_kernel(housing[["housing_median_age"]], [[35]], gamma=0.1)
 
+# Custom Transformers
+log_transformer = FunctionTransformer(np.log, inverse_func=np.exp)
+log_pop = log_transformer.transform(housing[["population"]])
+
+rbf_transformer = FunctionTransformer(rbf_kernel, kw_args=dict(Y=[[35.]], gamma=0.1))
+age_simil_35 = rbf_transformer.transform(housing[["housing_median_age"]])
+
+sf_coords = 37.7749, -122.41
+sf_transformer = FunctionTransformer(rbf_kernel, kw_args=dict(Y=[sf_coords], gamma=0.1))
+sf_simil = sf_transformer.transform(housing[["latitude", "longitude"]])
+
+ratio_transformer = FunctionTransformer(lambda X: X[:, [0]] / X[:, [1]])
+ratio_transformer.transform(np.array([[1., 2.], [3., 4.]]))
 
 
-# 
+# Transformation Pipelines
+num_pipeline = make_pipeline(SimpleImputer(strategy="median"), StandardScaler())
+
+housing_num_prepared = num_pipeline.fit_transform(housing_num)
+
+# 147

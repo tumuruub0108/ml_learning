@@ -410,6 +410,23 @@ Result: [Teen, Teen, Young Adult, Young Adult, Adult, Senior, Senior]
         Custom binning
             Based on domain knowledge (e.g., age groups like child/teen/adult/senior).
 
+
+# what is heavy tail 
+In Machine Learning (ML) and statistics, a heavy tail refers to a probability distribution where the probability of very large values (extreme outcomes) decreases more slowly than it would in a "normal" distribution like the Gaussian.э?
+
+Heavy tail гэдэг нь өгөгдлийн магадлалын тархалт нь маш их утгууд (экстрем утгууд) гарах магадлал их байдаг гэсэн үг юм.
+
+Өөрөөр хэлбэл:
+Ердийн (Normal) тархалт → дундажийн орчимд утгууд их төвлөрч, маш том эсвэл маш жижиг утгууд ховор тохиолдоно.
+Heavy-tailed тархалт (жишээ нь: Pareto, Cauchy, Student’s t) → маш том утгууд, онцгой (outlier) утгууд илүү олон гардаг.
+
+Жишээ:
+    Хүн амын орлого: ихэнх нь дундаж орчимд, гэхдээ маш цөөн хэд нь маш өндөр орлоготой байдаг.
+    Интернэтийн сүлжээний ачаалал: ихэнх үед хэвийн, гэхдээ хааяа маш их өсөлттэй “spike” гардаг.
+    Энэ бол heavy tail үзэгдэл.
+
+
+
 # what is class
 In machine learning, a class is simply a category or label that a data point can belong to in a classification problem.
 Think of it as the “type” or “group” you want your model to predict.
