@@ -1,6 +1,4 @@
-Your first task is to use California census data to build a model of housing prices in the state.This data includes metrics such as the population, median income, and median housing price for each block group in California.
-
-Your model should learn from this data and be able to predict the median housing price in any district, given all the other metrics.
+# Chapter 2
 
 PIPELINES
 A sequence of data processing components is called a data pipeline.Pipelines are very common in machine learning systems, since there is a lot of data to manipulate and many data transformations to apply.
@@ -29,27 +27,6 @@ Asynchronous (асинхрон) → бүрдлүүдийг заавал хүлэ
 Эдгээр нь асинхрон ажиллавал, нэг нь дуусахаар нөгөө нь эхлэхийг хүлээхгүй, өгөгдөл ирэхтэй зэрэгцээд шууд ажиллаж чадна. Энэ нь хурд, үр ашгийг нэмэгдүүлдэг.
 
 
-Select a Performance Measure
-Your next step is to select a performance measure. A typical performance measure for regression problems is the root mean square error (RMSE). It gives an idea of how much error the system typically makes in its predictions, with a higher weight given to large errors.
-
-
-RMSE = Root Mean Square Error
-Энэ нь моделийн таамаглал ба бодит утгын зөрүүг хэмжих хамгийн түгээмэл арга юм.
-    Таамаглал (predicted value) ба бодит утга (actual value) хоорондын зөрүү (error) олно.
-    Тэр зөрүүг квадрат болгоно (ингэснээр сөрөг утгагүй болно).
-    Бүх алдаануудын квадратын дундаж (mean) авна.
-    Эцэст нь дундаж квадратыг дахин үржвэр (root) авна.
-
-    Онцлог:
-        RMSE бага байх тусам таамаглал бодит утгад ойр байна гэсэн үг.
-        RMSE нь анхны утгын нэгжтэй ижил байдаг (жишээ нь, хэрвээ үнэ төгрөгөөр бол RMSE мөн төгрөгөөр хэмжигдэнэ).
-
-# Chapter 2
-Scikit-Learn provides a few functions to split datasets into multiple subsets in various ways ==> 
-from sklearn.model_selection import train_test_split
-80% train, 20% test
-train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
-
 Correlation is a statistical measure that shows how strongly two variables are related to each other.
 If two things change together in a predictable way, they are said to be correlated.
 
@@ -64,14 +41,13 @@ Example:
     No correlation: Shoe size and intelligence → unrelated.
 
 
-You create these new attributes as follows:
+# You create these new attributes as follows:
     df_house["rooms_per_house"] = df_house["total_rooms"] / df_house["households"]
     df_house["bedrooms_ratio"] = df_house["total_bedrooms"] / df_house["total_rooms"]
     df_house["people_per_house"] = df_house["population"] / df_house["households"]
 
 
-Clean the Data
-
+# Clean the Data
 inplace=True
     Modify the original DataFrame directly.
     If inplace=False (default), it would return a new DataFrame without changing original DataFrame.
@@ -82,9 +58,7 @@ option 1: dropna
 
     Use when:
         Only a few rows are missing data.
-
         The missing column/row is not critical or you have enough data left.
-
         You want to remove NaNs specifically.
 
     ✅ Pros: Simple, removes incomplete data.
@@ -96,7 +70,6 @@ option 2: drop
 
     Use when:
         Columns or rows are irrelevant, not missing.
-
         Example: ID columns, text columns that won’t be used in ML.
 
     ✅ Pros: Removes irrelevant features, keeps dataset clean.
@@ -109,29 +82,26 @@ option 3: fillna
 
     Use when:
         Column is important for analysis/model.
-
         You cannot afford to lose rows.
-
         Impute missing values with a statistic or method.
 
+option 4 Scikit-Learn class: SimpleImputer
+    How it works
+    When you create a SimpleImputer, you define a strategy:
+        "mean" → replaces missing values with the mean of the column (numeric data).
+        "median" → replaces missing values with the median of the column.
+        "most_frequent" → replaces with the most common value (works for both numeric & categorical).
+        "constant" → replaces with a specific value you define (e.g., 0, "missing", etc.).
 
-You decide to go for option 3 since it is the least destructive
-
-option 4
-you will use a handy Scikit-Learn class: SimpleImputer.
-The benefit is that it will store the median value of each feature:
+    Benefits of SimpleImputer
+        Prevents data loss → Instead of dropping rows/columns with missing values, you fill them smartly.
+        Keeps dataset usable → Especially important when missing values are common.
+        Different strategies → Flexible for both numerical (mean, median) and categorical (most_frequent, constant) data.
+        Pipeline integration → Works smoothly with Scikit-Learn pipelines, so preprocessing and modeling stay consistent.
 
 imputer = SimpleImputer(strategy="median")
-housing_num = df_house.select_dtypes(include=[np.number])
+housing_num = housing.select_dtypes(include=[np.number])
 imputer.fit(housing_num)
-
-Since the median can only be computed on numerical attributes, you thenneed to create a copy of the data with only the numerical attributes
-
-The imputer has simply computed the median of each attribute and stored the result in its statistics_ instance variable.
-print(imputer.statistics_)
-
-another option
-print(df_house .median(numeric_only=True).values)
 
 Now you can use this “trained” imputer to transform the training set by replacing missing values with the learned medians:
 X = imputer.transform(housing_num)
@@ -147,35 +117,42 @@ KNNImputer replaces each missing value with the mean of the k-nearest neighbors�
 
 # Handling Text and Categorical Attributes  
 Most machine learning algorithms prefer to work with numbers, so let’s convert these categories from text to numbers
-we can use Scikit-Learn’s OrdinalEncoder class:
-from sklearn.preprocessing import OrdinalEncoder
-ordinal_encoder = OrdinalEncoder()
-housing_cat_encoded = ordinal_encoder.fit_transform(housing_cat)
 
-option 2
-The new attributes are sometimes called dummy attributes.Scikit-Learn provides a OneHotEncoder class to convert categorical values
-into one-hot vectors:
+# Option 1 Scikit-Learn’s OrdinalEncoder class
+converts categorical values (strings/labels) into integer codes.
 
-from sklearn.preprocessing import OneHotEncoder
-# Handling Text and Categorical Attributes
-data = pd.DataFrame({"ocean_proximity": ["NEAR BAY", "INLAND", "NEAR OCEAN", "INLAND"]})
+data = pd.DataFrame({
+    "city": ["Seoul", "Busan", "Daegu", "Seoul"]
+})
+encoder = OrdinalEncoder()
+data["city_encoded"] = encoder.fit_transform(data[["city"]])\
 
-cat_encoder = OneHotEncoder()
-X = df_house[["ocean_proximity"]]
-X_encoded = cat_encoder.fit_transform(X)
+✅ Benefits:
+    Very simple, compact representation (just one column).
+    Works well when categories have a natural order (e.g., "low" < "medium" < "high").
+    Saves memory compared to one-hot.
 
-X_encoded_df = pd.DataFrame(
-    X_encoded.toarray(),
-    columns=cat_encoder.get_feature_names_out(["ocean_proximity"]),
-    index=df_house.index  # now X_encoded has same number of rows as df_house
-)
+⚠️ Warning: If categories have no natural order (like city names), models may incorrectly assume that Seoul (2.0) > Busan (0.0) in a meaningful way.
 
-df_house = df_house.drop("ocean_proximity", axis=1)
-df_house = pd.concat([df_house, X_encoded_df], axis=1)
+# option 2 Scikit-Learn’s OneHotEncoder class
+OneHotEncoder creates a binary column (0/1) for each category.
+encoder = OneHotEncoder(sparse=False)
+encoded = encoder.fit_transform(data[["city"]])
+✔ It creates 3 new columns: Busan, Daegu, Seoul, with 1 marking the active category.
 
+✅ Benefits:
+    No false ordering → each category is independent.
+    Better for ML models (like linear regression, logistic regression) that assume numeric distance matters.
+    Widely used when categories are nominal (no natural order).
 
-By default, the output of a OneHotEncoder is a SciPy sparse matrix, instead of a NumPy array:
-the advantage of OneHotEncoder is that it remembers which categories it wastrained on
+⚠️ Downside: Increases dataset size (high-dimensional if many categories).
+
+| Feature        | OrdinalEncoder                       | OneHotEncoder                      |
+| -------------- | ------------------------------------ | ---------------------------------- |
+| **Output**     | Single integer per category          | Multiple binary columns            |
+| **Best for**   | Ordered categories (low/medium/high) | Unordered categories (city, color) |
+| **Memory**     | Efficient (1 column)                 | More memory (n columns)            |
+| **Model risk** | May mislead model if no real order   | Safe, no false order               |
 
 
 # Feature Scaling and Transformation
@@ -203,87 +180,52 @@ There are two common ways to get all attributes to have the same scale: min-max 
         std_scaler = StandardScaler()
         housing_num_std_scaled = std_scaler.fit_transform(housing_num)
 
-# Capped data
-means extreme values (outliers) have been limited to a certain threshold.(Хэтэрхий хэтэрхий их/бага утгуудыг (outliers) тодорхой босгонд хязгаарласан.)
 
-    Example: If most incomes are below $200k but some are $5M, you might cap all values above $200k at $200k.
-    Жишээ: Хэрэв ихэнх орлого 200,000$-оос доош байхад зарим нь 5,000,000$ бол 200,000$-оос дээш утгыг бүгдийг нь 200,000 гэж авдаг.
-    Purpose: Reduce the negative impact of outliers on model training.
-    Зорилго: Outlier-ууд загварыг буруу сургахаас сэргийлэх.
+# Feature Transformation
+Feature transformation is the process of changing the representation of data features to make them more suitable for machine learning models.
 
-# clustering
-Clustering is the process of grouping similar data points together based on their features, without using labeled data.
-When data is clustered, it means the algorithm has divided the dataset into groups (called clusters) such that:
+It doesn’t create new information but reshapes existing features to:
+    Make patterns easier to learn
+    Improve model accuracy
+    Speed up training
 
-    Points in the same cluster are more similar to each other.
-    Points in different clusters are more different from each other.
+Why do we need it?
+    Raw data is often messy: different scales, distributions, and types of features.
+    Transforming features can:
+        Handle skewed data
+        Reduce the effect of outliers
+        Improve convergence of algorithms (especially gradient-based)
+        Make relationships more linear
+        Prepare data for specific models
 
-Example:
-    Suppose you have data about customers:
-        Age
-        Income
-        Spending habits
-
-    A clustering algorithm might group them into:
-        Cluster 1: Young, low income, low spending
-
-        Cluster 2: Middle-aged, medium income, medium spending
-
-        Cluster 3: Older, high income, high spending
-        
-No labels are provided—the algorithm “discovers” these groups automatically.
-
-# Stratified
-In machine learning, “stratified” usually refers to stratified sampling or stratified splitting, which is a way of dividing data into train/test (or folds in cross-validation) while preserving the distribution of labels or classes.
-
-📊 Example:
-Suppose you have a dataset with 100 samples:
-    80 are class A
-
-    20 are class B
-
-If you do a random split into 80% training and 20% testing, you might end up with:
-    Train: 70 A, 10 B
-
-    Test: 10 A, 10 B (imbalanced compared to original)
-
-But with a stratified split, the ratio is preserved:
-    Train: 64 A, 16 B (still 80:20 ratio)
-
-    Test: 16 A, 4 B (still 80:20 ratio)
-
-# Why it’s important:
-    Prevents bias in model evaluation.
-    Especially useful for imbalanced datasets (where some classes are rare).
-    Helps the model generalize better and ensures fair testing.
-
-# Feature transformations
-In Machine Learning (ML), a transformation means applying some operation to your data (inputs, features, or sometimes outputs) to make it more suitable for training a model or improving performance
-
-Feature Transformation гэдэг нь өгөгдлийн баганын утгыг шинэ хэлбэрт оруулах үйл явц юм.
-    Яагаад хэрэгтэй вэ:
-        Өгөгдлийн тархалтыг нормалд ойртуулж, сургалтын алгоритмын гүйцэтгэлийг сайжруулах
-        Шугаман бус (non-linear) хамаарлыг засах
-    Ерөнхий арга
-    Log Transformation
-    Баруун тийш хазайсан өгөгдлийг жигдлэх:
-        X_log = np.log1p(X)
-    Power / Box-Cox Transformation
-    Өгөгдлийг Gaussian тархалттай ойртуулах
-
-    from sklearn.preprocessing import PowerTransformer
-    pt = PowerTransformer()
-    X_transformed = pt.fit_transform(X)
-
-Polynomial Features
-Interaction буюу квадрат, куб зэрэг өндөр зэрэглэлийн баганууд нэмэх
-from sklearn.preprocessing import PolynomialFeatures
-poly = PolynomialFeatures(degree=2)
-X_poly = poly.fit_transform(X)
-
-    💡 Дүгнэлт:
-        Scaling → Алгоритмуудыг зөв ажиллуулахад чухал
-        Transformation → model гүйцэтгэлийг сайжруулахад ашиглагддаг
+🔹 Common Types of Feature Transformations
+    1. Scaling
+        Rescale features so they have similar ranges.
+        Min-Max Scaling → transforms values into [0,1].
+        Standardization (Z-score) → mean = 0, std = 1.
+    2. Normalization
+        Transform each sample to have unit length (used in text/embedding data).
+        Good for models using cosine similarity.
+    3. Log / Power Transformation
+        Fix skewed distributions (long tail values).
+        Example: income, population.
+            Income = [10, 100, 10000] → log(Income) = [1, 2, 4]
+    4. Bucketizing / Binning
+        Convert continuous values into discrete intervals (e.g., age groups, income ranges).
+    5. Encoding Categorical Data
+        OrdinalEncoder → maps categories to numbers with order.
+        OneHotEncoder → creates binary columns per category.
+    6. Polynomial / Interaction Features
+        Create new features by combining existing ones.
+        📌 Example: x1 * x2, x1^2 → helps linear models capture non-linear patterns.
+    7. Dimensionality Reduction
+        Transforms high-dimensional features into fewer dimensions (while keeping most info).
+            PCA (Principal Component Analysis)
+            t-SNE / UMAP (for visualization)
+    
+💡 Дүгнэлт:
+    Scaling → Алгоритмуудыг зөв ажиллуулахад чухал
+    Transformation → model гүйцэтгэлийг сайжруулахад ашиглагддаг
 
 the values are shifted
 1️⃣ Mean shift (дундаж шилжүүлэлт)
@@ -310,3 +252,27 @@ Heavy-tailed тархалт (жишээ нь: Pareto, Cauchy, Student’s t) →
     Хүн амын орлого: ихэнх нь дундаж орчимд, гэхдээ маш цөөн хэд нь маш өндөр орлоготой байдаг.
     Интернэтийн сүлжээний ачаалал: ихэнх үед хэвийн, гэхдээ хааяа маш их өсөлттэй “spike” гардаг.
     Энэ бол heavy tail үзэгдэл.
+
+
+
+
+
+
+
+
+
+
+Select a Performance Measure
+Your next step is to select a performance measure. A typical performance measure for regression problems is the root mean square error (RMSE). It gives an idea of how much error the system typically makes in its predictions, with a higher weight given to large errors.
+
+
+RMSE = Root Mean Square Error
+Энэ нь моделийн таамаглал ба бодит утгын зөрүүг хэмжих хамгийн түгээмэл арга юм.
+    Таамаглал (predicted value) ба бодит утга (actual value) хоорондын зөрүү (error) олно.
+    Тэр зөрүүг квадрат болгоно (ингэснээр сөрөг утгагүй болно).
+    Бүх алдаануудын квадратын дундаж (mean) авна.
+    Эцэст нь дундаж квадратыг дахин үржвэр (root) авна.
+
+    Онцлог:
+        RMSE бага байх тусам таамаглал бодит утгад ойр байна гэсэн үг.
+        RMSE нь анхны утгын нэгжтэй ижил байдаг (жишээ нь, хэрвээ үнэ төгрөгөөр бол RMSE мөн төгрөгөөр хэмжигдэнэ).

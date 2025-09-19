@@ -259,22 +259,17 @@ Example (Real-world):
 
 # Why Outliers Matter in Machine Learning
     Can skew the model: Especially in regression or distance-based algorithms (like linear regression or k-NN).
-
     Can increase error metrics like MSE, RMSE.
-
     May affect normalization/standardization (mean, std).
-
     Sometimes outliers contain important information → must carefully decide to remove or keep.
 
 # How to Detect Outliers
     Visualization
         Boxplot: points outside the whiskers
-
         Scatter plot: points far from cluster
 
     Statistical methods
         Z-score: z = (x - mean) / std, usually |z| > 3 is an outlier
-
         IQR (Interquartile Range): Q1 - 1.5*IQR and Q3 + 1.5*IQR
 
     Model-based detection
@@ -282,13 +277,9 @@ Example (Real-world):
 
 # How to Handle Outliers
     Remove them → if clearly erroneous.
-
     Transform data → log or square root to reduce effect.
-
     Use robust models → models less sensitive to outliers (like Random Forest, robust regression).
-
     Cap or Winsorize → limit extreme values to a threshold.
-
 
 # What is correlation 
 Correlation is a statistical measure that shows how strongly two variables are related to each other.
@@ -305,29 +296,191 @@ Example:
     No correlation: Shoe size and intelligence → unrelated.
 
 
+# Capped data
+means extreme values (outliers) have been limited to a certain threshold.(Хэтэрхий хэтэрхий их/бага утгуудыг (outliers) тодорхой босгонд хязгаарласан.)
+
+    Example: If most incomes are below $200k but some are $5M, you might cap all values above $200k at $200k.
+    Жишээ: Хэрэв ихэнх орлого 200,000$-оос доош байхад зарим нь 5,000,000$ бол 200,000$-оос дээш утгыг бүгдийг нь 200,000 гэж авдаг.
+    Purpose: Reduce the negative impact of outliers on model training.
+    Зорилго: Outlier-ууд загварыг буруу сургахаас сэргийлэх.
+
+# clustering
+Clustering is the process of grouping similar data points together based on their features, without using labeled data.
+When data is clustered, it means the algorithm has divided the dataset into groups (called clusters) such that:
+
+    Points in the same cluster are more similar to each other.
+    Points in different clusters are more different from each other.
+
+Example:
+    Suppose you have data about customers:
+        Age
+        Income
+        Spending habits
+
+    A clustering algorithm might group them into:
+        Cluster 1: Young, low income, low spending
+        Cluster 2: Middle-aged, medium income, medium spending
+        Cluster 3: Older, high income, high spending
+        
+No labels are provided—the algorithm “discovers” these groups automatically.
+
+# Stratified
+In machine learning, “stratified” usually refers to stratified sampling or stratified splitting, which is a way of dividing data into train/test (or folds in cross-validation) while preserving the distribution of labels or classes.
+
+📊 Example:
+Suppose you have a dataset with 100 samples:
+    80 are class A
+    20 are class B
+
+If you do a random split into 80% training and 20% testing, you might end up with:
+    Train: 70 A, 10 B
+    Test: 10 A, 10 B (imbalanced compared to original)
+
+But with a stratified split, the ratio is preserved:
+    Train: 64 A, 16 B (still 80:20 ratio)
+    Test: 16 A, 4 B (still 80:20 ratio)
+
+Why it’s important:
+    Prevents bias in model evaluation.
+    Especially useful for imbalanced datasets (where some classes are rare).
+    Helps the model generalize better and ensures fair testing.
+
+# Skewed Data
+Skewed data means the distribution of a feature is not symmetric around the mean.
+In other words, the data is “pulled” more to one side, instead of forming a nice bell curve (normal distribution).
+
+    Normal distribution → symmetric (mean ≈ median ≈ mode).
+    Skewed distribution → asymmetric (mean, median, mode differ).
+
+🔹 Types of Skewness
+        Right Skew (Positive Skew)
+            Long tail on the right (high values).
+            Mean > Median.
+            Example: income, house prices (a few very rich people pull the average up).
+
+        Left Skew (Negative Skew)
+            Long tail on the left (low values).
+            Mean < Median.
+            Example: student exam scores (if most do well but a few score very low).
+
+🔹 Why Skewness Matters in Machine Learning
+        Algorithms assume normality
+            Linear regression, logistic regression, and many statistical tests assume data is roughly normally distributed.
+            Skewed data can bias coefficients and predictions.
+
+        Influence of outliers
+            Skewness often means outliers are present (very high or very low values).
+            Models may overfit to these.
+        Model performance
+            Some models (e.g., tree-based like Random Forests, XGBoost) are less sensitive.
+            But distance-based models (k-NN, clustering) can be heavily affected.
+🔹 Example
+    If income = [20k, 30k, 50k, 60k, 200k, 500k, 1M],
+        Raw → very skewed (few very high earners).
+        Log-transformed → distribution looks more “normal.”
+
+# What is Bucketizing in Machine Learning?
+Bucketizing (also called binning or discretization) means converting a continuous numerical variable into discrete bins (intervals).
+
+Instead of keeping raw continuous values, you group them into “buckets.”
+
+Example:
+Suppose you have ages: [15, 18, 22, 30, 45, 60, 75]
+After bucketizing into bins:
+    0–18 → Teen
+    19–35 → Young Adult
+    36–55 → Adult
+    56+ → Senior
+Result: [Teen, Teen, Young Adult, Young Adult, Adult, Senior, Senior]
+
+✅ Benefits:
+        Simplifies continuous variables → makes models easier to interpret.
+        Captures non-linear effects → sometimes relationships are not linear (e.g., income vs. happiness).
+        Handles outliers better → extreme values fall into the same bucket instead of distorting the scale.
+        Useful for categorical models → some algorithms (like decision trees) work well with binned data.
+        Feature engineering → creates new features, e.g., grouping income levels
+
+🔹 Types of Bucketizing
+        Equal-width binning
+            Divide the range into intervals of equal size.
+            Example: 0–20, 20–40, 40–60.
+        Equal-frequency binning (quantile binning)
+            Each bin has (approximately) the same number of samples.
+            Example: quartiles (Q1, Q2, Q3, Q4).
+        Custom binning
+            Based on domain knowledge (e.g., age groups like child/teen/adult/senior).
+
+# what is class
+In machine learning, a class is simply a category or label that a data point can belong to in a classification problem.
+Think of it as the “type” or “group” you want your model to predict.
+
+🔹 Key Points About Classes
+	Discrete categories
+		Classes are distinct labels, not continuous numbers.
+		Example: {“spam”, “not spam”}, {“cat”, “dog”, “rabbit”}, {“disease”, “healthy”}
+	Depends on the problem
+		The number of classes depends on the specific classification task:
+			Binary classification → 2 classes (e.g., Yes/No)
+			Multi-class classification → 3 or more classes (e.g., Cat/Dog/Rabbit)
+			Multi-label classification → each instance can belong to multiple classes at the same time
+	Used for training
+		During training, the model learns to map input features to the correct class.
+		The classes are often represented as numbers internally, e.g., 0, 1, 2…
+
+| Task               | Input            | Classes                     |
+| ------------------ | ---------------- | --------------------------- |
+| Email filtering    | Email content    | Spam, Not Spam              |
+| Fruit recognition  | Image of a fruit | Apple, Banana, Orange       |
+| Sentiment analysis | Text review      | Positive, Neutral, Negative |
+
+
+
+We use classification in machine learning because many real-world problems involve making decisions or assigning things into categories (classes) rather than predicting continuous values.
+
+🔑 Reasons why we do classification:
+	Nature of the Problem
+		Many tasks are inherently categorical:
+			Spam ❌ vs. Not Spam ✅
+			Fraudulent 💳 vs. Legitimate transaction
+			Disease present 🩺 vs. not present
+			Sentiment: Positive 🙂, Negative 🙁, Neutral 😐
+	Decision-Making
+		In real applications, what we care about is the final decision, not just probabilities. Example: An email system has to decide show in inbox or move to spam
+	Interpretability
+		Classification provides clear labels that are easy for humans to understand and act on.
+	Efficiency in Action
+		ystems can take automated actions once a class is determined. Example: If a transaction is classified as fraud → block it.
+	Generalization of Knowledge
+		Classification allows machines to generalize from past labeled examples to unseen ones.
+
+🧠 Difference vs. Regression
+	Regression → predicts how much (continuous value).
+	Classification → predicts which category (discrete label).
+
+	Example:
+		Regression: "What is the temperature tomorrow?" → 27.3°C
+		Classification: "Will it rain tomorrow?" → Yes/No
+
+
+
+
+
 1. Data Preprocessing & Cleaning
     Before training a model, data should be cleaned and prepared. Things to know:
         Missing values → imputation (mean/median/mode) or removal
-
         Categorical variables → one-hot encoding, label encoding
-
         Scaling / normalization → important for models like neural networks or SVMs
-
         Feature engineering → creating meaningful features from raw data
-
         Detecting duplicates → remove repeated data that may bias the model
 
 2. Feature Selection
     Choose features that actually help the model learn
-
     Techniques: correlation analysis, mutual information, recursive feature elimination
-
     Reduces overfitting, improves interpretability, and reduces training time
 
 3. Model Evaluation Concepts
     Bias vs Variance
         High bias → underfitting, poor training and validation performance
-
         High variance → overfitting, good training but poor validation performance
 
     Learning curves → plot training vs validation performance over epochs
@@ -337,9 +490,7 @@ Example:
 4. Regularization Techniques
     Help prevent overfitting:
         L1 (Lasso) → encourages sparsity
-
         L2 (Ridge) → penalizes large weights
-
         Dropout → in neural networks, randomly drop neurons during training
 
 5. Cross-Validation
@@ -351,9 +502,7 @@ Example:
     Choosing best learning rate, batch size, number of layers, tree depth, etc.
     Techniques:
         Grid Search
-
         Random Search
-
         Bayesian Optimization
 
     Fine-tuning pre-trained models (transfer learning)
@@ -362,9 +511,7 @@ Example:
     Some classes appear less frequently → model may ignore them
     Solutions:
         Oversampling minority class (SMOTE)
-
         Undersampling majority class
-
         Weighted loss functions
 
 8. Overfitting vs Underfitting

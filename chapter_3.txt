@@ -14,14 +14,11 @@ The labels, usually as a 1D NumPy array
 1. Understanding the Problem
 	Binary vs Multi-class vs Multi-label:
 		Binary: Two classes (e.g., spam vs not spam)
-
 		Multi-class: More than two classes, each sample belongs to one class (e.g., Iris dataset)
-
 		Multi-label: Each sample can belong to multiple classes (e.g., tagging images)
 
 	Imbalanced Classes:
 		When some classes have much fewer samples than others.
-
 		Problem: model may predict majority class all the time.
 
 	Solution:
@@ -29,16 +26,12 @@ The labels, usually as a 1D NumPy array
 
 2. Feature Engineering
 	Classification models depend on good input features.
-
 	Categorical features: one-hot encode, label encode
-
 	Numerical features: normalize or standardize (especially for SVM, KNN, neural networks)
-
 	Feature selection is important to reduce noise and overfitting.
 
 3. Model Choice
 	Start simple: Logistic Regression, Decision Trees, KNN
-
 	Ensemble methods (Random Forest, Gradient Boosting) for better performance
 
 	Neural networks for complex data (images, text, sequences)
@@ -58,14 +51,11 @@ Tip: Always consider dataset size, dimensionality, and interpretability when cho
 
 5. Cross-Validation
 	Use k-fold cross-validation for small datasets
-
 	Helps avoid overfitting and get a reliable estimate of model performance
 
 6. Handling Imbalanced Data
 	Oversampling minority class (SMOTE)
-
 	Undersampling majority class
-
 	Weighted loss functions in algorithms (e.g., class_weight in sklearn or TensorFlow)
 
 7. Avoid Data Leakage
@@ -73,82 +63,23 @@ Tip: Always consider dataset size, dimensionality, and interpretability when cho
 
 	Common leakage sources:
 		Using target-related features
-
 		Improper preprocessing (fit scaler on all data before splitting)
 
 8. Hyperparameter Tuning
 	For Decision Trees / Random Forest: max_depth, min_samples_split, n_estimators
-
 	For Logistic Regression: C (regularization)
-
 	For Neural Networks: learning rate, number of layers, activation functions
-
 	Use validation set or cross-validation for tuning.
 
 9. Interpretability
 	Some applications require explanation (e.g., healthcare, finance)
-
 	Decision Trees and Logistic Regression are interpretable
-
 	Neural networks require tools like SHAP or LIME for explanations
 
 10. Deployment Considerations
 	Handle new/unseen classes in production
-
 	Monitor class distribution changes (data drift)
-
 	Ensure the model is robust to input noise
-
-# what is class in machine learning
-In machine learning, a class is simply a category or label that a data point can belong to in a classification problem.
-Think of it as the “type” or “group” you want your model to predict.
-
-🔹 Key Points About Classes
-	Discrete categories
-		Classes are distinct labels, not continuous numbers.
-		Example: {“spam”, “not spam”}, {“cat”, “dog”, “rabbit”}, {“disease”, “healthy”}
-	Depends on the problem
-		The number of classes depends on the specific classification task:
-			Binary classification → 2 classes (e.g., Yes/No)
-			Multi-class classification → 3 or more classes (e.g., Cat/Dog/Rabbit)
-			Multi-label classification → each instance can belong to multiple classes at the same time
-	Used for training
-		During training, the model learns to map input features to the correct class.
-		The classes are often represented as numbers internally, e.g., 0, 1, 2…
-
-| Task               | Input            | Classes                     |
-| ------------------ | ---------------- | --------------------------- |
-| Email filtering    | Email content    | Spam, Not Spam              |
-| Fruit recognition  | Image of a fruit | Apple, Banana, Orange       |
-| Sentiment analysis | Text review      | Positive, Neutral, Negative |
-
-
-
-We use classification in machine learning because many real-world problems involve making decisions or assigning things into categories (classes) rather than predicting continuous values.
-
-🔑 Reasons why we do classification:
-	Nature of the Problem
-		Many tasks are inherently categorical:
-			Spam ❌ vs. Not Spam ✅
-			Fraudulent 💳 vs. Legitimate transaction
-			Disease present 🩺 vs. not present
-			Sentiment: Positive 🙂, Negative 🙁, Neutral 😐
-	Decision-Making
-		In real applications, what we care about is the final decision, not just probabilities. Example: An email system has to decide show in inbox or move to spam
-	Interpretability
-		Classification provides clear labels that are easy for humans to understand and act on.
-	Efficiency in Action
-		ystems can take automated actions once a class is determined. Example: If a transaction is classified as fraud → block it.
-	Generalization of Knowledge
-		Classification allows machines to generalize from past labeled examples to unseen ones.
-
-🧠 Difference vs. Regression
-	Regression → predicts how much (continuous value).
-	Classification → predicts which category (discrete label).
-
-	Example:
-		Regression: "What is the temperature tomorrow?" → 27.3°C
-		Classification: "Will it rain tomorrow?" → Yes/No
 		
 # Binary Classifier
 A binary classifier is a type of machine learning model that predicts one of two possible classes (also called labels) for a given input.
@@ -211,8 +142,6 @@ False Positive (FP): Загвар эерэг гэж таамагласан ч ү
 False Negative (FN): Загвар сөрөг гэж таамагласан ч үнэндээ эерэг байсан (II төрлийн алдаа).
 
 Энэ матрицаас үнэн зөв (accuracy), нарийвчлал (precision), сэргээн танилт (recall), F1 оноо зэрэг хэмжүүрүүдийг тооцоолдог.
-
-
 
 TP (True Positive): Model correctly predicts positive.
 TN (True Negative): Model correctly predicts negative.
@@ -349,9 +278,6 @@ precisions, recalls, thresholds = precision_recall_curve(y_train_5, y_scores)
 The receiver operating characteristic (ROC) curve is another common tool used with binary classifiers. It is very similar to the precision/recall curve, but instead of plotting precision versus recall, the ROC curve plots the true positive rate (another name for recall) against the false positive rate (FPR). The FPR (also called the fall-out) is the ratio of negative instances that are
 incorrectly classified as positive. It is equal to 1 – the true negative rate (TNR), which is the ratio of negative instances that are correctly classified as negative. The TNR is also called specificity. Hence, the ROC curve plots sensitivity (recall) versus 1 – specificity.
 
-
-
-
 TIP
 Since the ROC curve is so similar to the precision/recall (PR) curve, you may wonder how to decide which one to use. As a rule of thumb, you should prefer the PR curve whenever the positive class is rare or when you care more about the false positives than the false negatives. Otherwise, use the ROC curve. For example, looking at the previous ROC curve (and the ROC AUC score), you may think that the classifier is really good. But this is mostly because there are few positives (5s) compared to the negatives (non-5s). In contrast, the PR curve makes it clear that the classifier has room for improvement: the curve could really be closer to the top-right corner
 
@@ -419,10 +345,6 @@ There are a few strategies to handle multilabel classification:
 			Decision trees/Random forests with multilabel extensions.
 
 
-
-
-			
-			
 # Multioutput Classification
 Multioutput classification (also called multi-output multiclass classification) is a type of supervised learning where:
 	Each instance (data point) has multiple target variables (outputs).

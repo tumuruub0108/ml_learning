@@ -9,17 +9,21 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.metrics.pairwise import rbf_kernel
 from sklearn.linear_model import LinearRegression
+from pandas.plotting import scatter_matrix
 
 # read and show the dataset
 BASE_DIR = Path(__file__).resolve().parent
 file_path = BASE_DIR /"datasets"/"housing.csv"
 housing = pd.read_csv(file_path)
 
+"""
+print(housing.head()) # the top five rows
+print(housing.info()) # to get a quick description of the data
+print(housing["ocean_proximity"].value_counts())
+print(housing.describe()) # summary of the numerical attribute
 
-# print(housing.head()) # the top five rows
-# print(housing.info()) # to get a quick description of the data
-# print(housing["ocean_proximity"].value_counts())
-# print(housing.describe()) # summary of the numerical attribute
+"""
+
 """
 
 housing.hist(bins=50, figsize=(12, 8)) # to plot a histogram for each numerical attribute
@@ -47,5 +51,79 @@ for set_ in (strat_train_set, strat_test_set):
 housing = strat_train_set.copy()
 
 
-housing.plot(kind="scatter", x="longitude", y="latitude", grid=True)
+# Visualizing Geographical Data
+"""
+
+housing.plot(kind="scatter", x="longitude", y="latitude", grid=True, alpha=0.2)
 plt.show()
+
+housing.plot(kind="scatter", x="longitude", y="latitude", grid=True, s=housing["population"] / 100, label="population", c="median_house_value", cmap="jet", colorbar=True, legend=True, sharex=False, figsize=(10, 7))
+plt.show()
+
+"""
+
+
+# Look for Correlations
+"""
+
+# option 1
+corr_matrix = housing.select_dtypes(include=["number"]).corr()
+print(corr_matrix["median_house_value"].sort_values(ascending=False))
+
+
+# option 2
+attributes = ["median_house_value", "median_income", "total_rooms",
+"housing_median_age"]
+scatter_matrix(housing[attributes], figsize=(12, 8))
+plt.show()
+
+
+housing.plot(kind="scatter", x="median_income", y="median_house_value",
+alpha=0.1, grid=True)
+plt.show()
+
+"""
+
+
+# Experiment with Attribute Combinations
+housing["rooms_per_house"] = housing["total_rooms"] / housing["households"]
+housing["bedrooms_ratio"] = housing["total_bedrooms"] / housing["total_rooms"]
+housing["people_per_house"] = housing["population"] / housing["households"]
+corr_matrix = housing.select_dtypes(include=["number"]).corr()
+
+# Prepare the Data for Machine Learning Algorithms
+housing = strat_train_set.drop("median_house_value", axis=1)
+housing_labels = strat_train_set["median_house_value"].copy()
+
+
+# Clean the data
+imputer = SimpleImputer(strategy="median")
+housing_num = housing.select_dtypes(include=[np.number])
+imputer.fit(housing_num)
+X = imputer.transform(housing_num) # output of imputer.transform(housing_num) is a NumPy array:  
+housing_tr = pd.DataFrame(X, columns=housing_num.columns, index=housing_num.index)
+
+
+# Handling Text and Categorical Attributes
+housing_cat = housing[["ocean_proximity"]]
+
+cat_encoder = OneHotEncoder()
+housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
+# print(housing_cat_1hot.toarray())
+
+
+
+# Feature Scaling and Transformation
+# option 1  Min-max scaling (many people call this normalization)
+min_max_scaler = MinMaxScaler(feature_range=(-1, 1))
+housing_num_min_max_scaled = min_max_scaler.fit_transform(housing_num)
+
+# option 2  
+std_scaler = StandardScaler()
+housing_num_std_scaled = std_scaler.fit_transform(housing_num)
+
+age_simil_35 = rbf_kernel(housing[["housing_median_age"]], [[35]], gamma=0.1)
+
+
+
+# 
