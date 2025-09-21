@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, StandardScaler,FunctionTransformer
 from sklearn.metrics.pairwise import rbf_kernel
 from sklearn.linear_model import LinearRegression
 from pandas.plotting import scatter_matrix
-from sklearn.preprocessing import FunctionTransformer
-from sklearn.pipeline import make_pipeline
+from sklearn.pipeline import Pipeline, make_pipeline
+from sklearn.compose import ColumnTransformer,make_column_selector, make_column_transformer
+from sklearn.metrics import root_mean_squared_error
 
 # read and show the dataset
 BASE_DIR = Path(__file__).resolve().parent
@@ -143,8 +143,33 @@ ratio_transformer.transform(np.array([[1., 2.], [3., 4.]]))
 
 
 # Transformation Pipelines
-num_pipeline = make_pipeline(SimpleImputer(strategy="median"), StandardScaler())
+num_pipeline = Pipeline([("impute", SimpleImputer(strategy="median")),("standardize", StandardScaler())])
 
-housing_num_prepared = num_pipeline.fit_transform(housing_num)
 
-# 147
+num_attribs = ["longitude", "latitude", "housing_median_age", "total_rooms", "total_bedrooms", "population", "households" "median_income"]
+cat_attribs = ["ocean_proximity"]
+
+cat_pipeline = make_pipeline(SimpleImputer(strategy="most_frequent"), OneHotEncoder(handle_unknown="ignore"))
+
+preprocessing = ColumnTransformer([("num", num_pipeline, num_attribs),("cat", cat_pipeline, cat_attribs)])
+
+preprocessing = make_column_transformer(
+    (num_pipeline, make_column_selector(dtype_include=np.number)),
+    (cat_pipeline, make_column_selector(dtype_include=object)),
+)
+
+housing_prepared = preprocessing.fit_transform(housing)
+
+# print(housing_prepared.shape)
+# print(preprocessing.get_feature_names_out())
+
+
+# Train and Evaluate on the Training Set
+lin_reg = make_pipeline(preprocessing, LinearRegression())
+lin_reg.fit(housing, housing_labels)
+
+housing_predictions = lin_reg.predict(housing)
+lin_rmse = root_mean_squared_error(housing_labels, housing_predictions)
+print(lin_rmse)
+
+# 152

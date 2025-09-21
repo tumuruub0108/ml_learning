@@ -324,7 +324,7 @@ Example:
         
 No labels are provided—the algorithm “discovers” these groups automatically.
 
-# Stratified
+# Stratified (stratify)
 In machine learning, “stratified” usually refers to stratified sampling or stratified splitting, which is a way of dividing data into train/test (or folds in cross-validation) while preserving the distribution of labels or classes.
 
 📊 Example:

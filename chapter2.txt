@@ -1,32 +1,4 @@
 # Chapter 2
-
-PIPELINES
-A sequence of data processing components is called a data pipeline.Pipelines are very common in machine learning systems, since there is a lot of data to manipulate and many data transformations to apply.
-Өгөгдөл боловсруулах дараалсан бүрдлүүдийг “data pipeline" гэж нэрлэдэг.сМашин сургалтын системд ийм pipeline маш түгээмэл байдаг. Учир нь их хэмжээний өгөгдлийг боловсруулах, олон төрлийн хувиргалт хийх шаардлагатай байдаг.
-
-Pipeline гэдэг нь өгөгдлийг дараалсан алхамуудаар боловсруулах явц.
-
-    Жишээ нь:
-        Түүхий өгөгдөл цуглуулах
-        Өгөгдөл цэвэрлэх
-        Шинж чанар (features) гаргаж авах
-    Загварт оруулах:
-         Энэ бүхийг нэг урсгал (pipeline) болгох нь автоматжуулж, алдаа багасгаж, дахин ашиглахад хялбар болгодог.
-
-Components typically run asynchronously. Each component pulls in a large amount of data, processes it, and spits out the result in another data store. Then, some time later, the next component in the pipeline pulls in this data and spits out its own output.
-
-
-Synchronous (синхрон) → нэг бүрдэл дуусахад дараагийнх эхэлдэг.
-Asynchronous (асинхрон) → бүрдлүүдийг заавал хүлээлгүй, зэрэгцээд эсвэл бие даан ажиллаж болно.
-
-    Жишээ нь, data pipeline дотор:
-        Өгөгдөл уншиж буй бүрдэл
-        Өгөгдөл цэвэрлэж буй бүрдэл
-        Загварт оруулж буй бүрдэл
-        
-Эдгээр нь асинхрон ажиллавал, нэг нь дуусахаар нөгөө нь эхлэхийг хүлээхгүй, өгөгдөл ирэхтэй зэрэгцээд шууд ажиллаж чадна. Энэ нь хурд, үр ашгийг нэмэгдүүлдэг.
-
-
 Correlation is a statistical measure that shows how strongly two variables are related to each other.
 If two things change together in a predictable way, they are said to be correlated.
 
@@ -273,8 +245,74 @@ That’s why you might need custom transformers.
             Once written, your custom transformer can be dropped into a Scikit-Learn Pipeline or ColumnTransformer.
             Keeps preprocessing and training consistent.
 
-# Transformation Pipelines
 
+# PIPELINE
+A sequence of data processing components is called a data pipeline.Pipelines are very common in machine learning systems, since there is a lot of data to manipulate and many data transformations to apply.
+Өгөгдөл боловсруулах дараалсан бүрдлүүдийг data pipeline гэж нэрлэдэг.Машин сургалтын системд ийм pipeline маш түгээмэл байдаг. Учир нь их хэмжээний өгөгдлийг боловсруулах, олон төрлийн хувиргалт хийх шаардлагатай байдаг.
+
+Pipeline гэдэг нь өгөгдлийг дараалсан алхамуудаар боловсруулах явц.
+
+    Жишээ нь:
+        Түүхий өгөгдөл цуглуулах
+        Өгөгдөл цэвэрлэх
+        Шинж чанар (features) гаргаж авах
+    Загварт оруулах:
+         Энэ бүхийг нэг урсгал (pipeline) болгох нь автоматжуулж, алдаа багасгаж, дахин ашиглахад хялбар болгодог.
+
+Components typically run asynchronously. Each component pulls in a large amount of data, processes it, and spits out the result in another data store. Then, some time later, the next component in the pipeline pulls in this data and spits out its own output.
+
+
+Synchronous (синхрон) → нэг бүрдэл дуусахад дараагийнх эхэлдэг.
+Asynchronous (асинхрон) → бүрдлүүдийг заавал хүлээлгүй, зэрэгцээд эсвэл бие даан ажиллаж болно.
+
+    Жишээ нь, data pipeline дотор:
+        Өгөгдөл уншиж буй бүрдэл
+        Өгөгдөл цэвэрлэж буй бүрдэл
+        Загварт оруулж буй бүрдэл
+        
+Эдгээр нь асинхрон ажиллавал, нэг нь дуусахаар нөгөө нь эхлэхийг хүлээхгүй, өгөгдөл ирэхтэй зэрэгцээд шууд ажиллаж чадна. Энэ нь хурд, үр ашгийг нэмэгдүүлдэг.
+
+# Transformation Pipelines
+In machine learning and data preprocessing, a transformation pipeline is a sequence (pipeline) of data transformation steps applied to raw data before feeding it into a machine learning model.
+    Think of it as an assembly line:
+        Raw data enters.
+        Each step applies a transformation (cleaning, encoding, scaling, etc.).
+        The final output is a processed dataset ready for the model.
+
+    In Scikit-Learn, this is usually implemented using the Pipeline class.
+
+#Why do we use Transformation Pipelines?
+    ✅ Consistency – ensures that the same transformations are applied in training and testing (no mismatch).
+    ✅ Automation – once defined, preprocessing is automatic, reducing manual coding.
+    ✅ Reproducibility – transformations are stored in one object, so experiments can be repeated easily.
+    ✅ Avoids data leakage – transformations (like scaling or imputing) are fitted only on training data, then applied to test data safely.
+    ✅ Integration – combines preprocessing and modeling into one workflow (you can even grid search over the pipeline).
+
+    from sklearn.pipeline import Pipeline
+    from sklearn.impute import SimpleImputer
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.linear_model import LogisticRegression
+
+    # Define pipeline
+    pipeline = Pipeline([
+        ('imputer', SimpleImputer(strategy='mean')),   # Handle missing values
+        ('scaler', StandardScaler()),                  # Scale features
+        ('model', LogisticRegression())                # Train model
+    ])
+
+    # Fit on training data
+    pipeline.fit(X_train, y_train)
+
+    # Predict on test data
+    y_pred = pipeline.predict(X_test)
+
+    Here:
+        Missing values are filled in.
+        Data is scaled.
+        Logistic Regression is trained — all in one pipeline.
+
+
+# Train and Evaluate on the Training Set
 
 # Select a Performance Measure
 Your next step is to select a performance measure. A typical performance measure for regression problems is the root mean square error (RMSE). It gives an idea of how much error the system typically makes in its predictions, with a higher weight given to large errors.
