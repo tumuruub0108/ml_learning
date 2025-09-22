@@ -328,3 +328,90 @@ RMSE = Root Mean Square Error
     Онцлог:
         RMSE бага байх тусам таамаглал бодит утгад ойр байна гэсэн үг.
         RMSE нь анхны утгын нэгжтэй ижил байдаг (жишээ нь, хэрвээ үнэ төгрөгөөр бол RMSE мөн төгрөгөөр хэмжигдэнэ).
+
+# Fine-Tune Your Model
+fine-tuning your model means taking an already trained model (often a large, general-purpose one) and making small adjustments so it performs better on a specific dataset or task.It’s like starting with a “pre-trained brain” and then customizing it for your problem instead of training everything from scratch.
+
+🔑 Key Ideas in Fine-Tuning
+    Pre-trained model
+        You start with a model already trained on a large dataset (e.g., ImageNet for vision, Wikipedia text for NLP).
+        This model has already learned general features or patterns.
+
+    Task-specific adaptation
+        You adjust (fine-tune) the model using your smaller, domain-specific dataset.
+        Example: A model trained on general images → fine-tuned to detect medical X-rays.
+
+    Parameter updating
+        Instead of changing all weights from scratch, you update only some layers or all weights slightly.
+        Sometimes, earlier layers (basic features like edges, shapes) are frozen, while later layers are fine-tuned.
+
+    Learning rate
+        Fine-tuning uses a smaller learning rate to avoid "destroying" the useful knowledge already in the pre-trained model.
+
+⚖️ Why Fine-Tune?
+    Efficiency → Faster training since the model already knows general patterns.
+    Better accuracy → Pre-trained knowledge gives a strong starting point.
+    Useful with small data → You don’t need millions of samples.
+
+# Grid Search
+Grid Search is a systematic way to find the best hyperparameters for a model.
+
+🔑 Key Idea
+        Every ML algorithm has hyperparameters (settings you choose before training, like learning rate, number of neighbors in KNN, depth of a decision tree, etc.).
+        Instead of guessing, Grid Search tests all possible combinations of these hyperparameters in a predefined “grid.”
+        It then selects the combination that gives the best performance (based on accuracy, F1-score, RMSE, etc.).
+
+⚙️ How It Works
+    Define the hyperparameter space (a grid of possible values).
+    Example for a Decision Tree:
+        max_depth = [3, 5, 10]
+        min_samples_split = [2, 5, 10]
+
+    Train and evaluate the model for every possible combination.
+        If 3 depths × 3 splits = 9 total models.
+
+    Use cross-validation to reduce overfitting risk and get reliable performance estimates.
+    Pick the best model with the highest score.
+
+✅ Advantages
+    Finds the best hyperparameters.
+    Easy to understand and implement.
+
+❌ Disadvantages
+    Computationally expensive (tries all combinations).
+    Doesn’t scale well if there are many hyperparameters or large range
+
+
+
+# Randomized Search
+In machine learning, Randomized Search (often used as RandomizedSearchCV in scikit-learn) is a technique for hyperparameter tuning — similar to Grid Search, but more efficient.
+
+🔑 Key Idea
+    Grid Search: tries all possible combinations of hyperparameters in a predefined grid.
+    Randomized Search: instead of trying everything, it samples random combinations from the hyperparameter distributions you specify.
+
+So instead of exhaustively testing 1000 combinations, it might only test 50 randomly chosen ones — faster but still effective.
+
+⚙️ How It Works
+    You define a distribution or list of possible hyperparameter values.
+        Example: learning rate ∼ uniform(0.0001, 0.1), max_depth ∈ [3, 5, 10, 20].
+
+    RandomizedSearchCV randomly selects a fixed number of combinations (n_iter).
+
+    Each sampled set of hyperparameters is evaluated using cross-validation.
+
+    It keeps track of the best performing set.
+
+✅ Advantages
+    Much faster than Grid Search for large search spaces.
+    Can search over continuous ranges (not just fixed grids).
+    Good balance between performance and efficiency.
+
+❌ Disadvantages
+    Doesn’t guarantee finding the absolute best combination (since it samples randomly).
+    Requires choosing n_iter (more iterations = better, but slower).
+
+Grid Search = exhaustive, slower, good for small spaces.
+Randomized Search = random sampling, faster, good for large spaces.
+
+# Ensemble Methods

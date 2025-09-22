@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split,cross_val_score, GridSearchCV, RandomizedSearchCV
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, StandardScaler,FunctionTransformer
 from sklearn.metrics.pairwise import rbf_kernel
@@ -12,6 +12,10 @@ from pandas.plotting import scatter_matrix
 from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.compose import ColumnTransformer,make_column_selector, make_column_transformer
 from sklearn.metrics import root_mean_squared_error
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from scipy.stats import randint
+
 
 # read and show the dataset
 BASE_DIR = Path(__file__).resolve().parent
@@ -151,7 +155,7 @@ cat_attribs = ["ocean_proximity"]
 
 cat_pipeline = make_pipeline(SimpleImputer(strategy="most_frequent"), OneHotEncoder(handle_unknown="ignore"))
 
-preprocessing = ColumnTransformer([("num", num_pipeline, num_attribs),("cat", cat_pipeline, cat_attribs)])
+preprocessing = ColumnTransformer([("num", num_pipeline, num_attribs),("cat", cat_pipeline, cat_attribs),])
 
 preprocessing = make_column_transformer(
     (num_pipeline, make_column_selector(dtype_include=np.number)),
@@ -165,11 +169,90 @@ housing_prepared = preprocessing.fit_transform(housing)
 
 
 # Train and Evaluate on the Training Set
+
+# Linear regression
 lin_reg = make_pipeline(preprocessing, LinearRegression())
 lin_reg.fit(housing, housing_labels)
 
 housing_predictions = lin_reg.predict(housing)
 lin_rmse = root_mean_squared_error(housing_labels, housing_predictions)
-print(lin_rmse)
+# print(lin_rmse)
 
-# 152
+# Decision tree
+tree_reg = make_pipeline(preprocessing, DecisionTreeRegressor(random_state=42))
+tree_reg.fit(housing, housing_labels)
+
+housing_predictions = tree_reg.predict(housing)
+tree_rmse = root_mean_squared_error(housing_labels, housing_predictions)
+# print(tree_rmse)
+
+
+# Better Evaluation Using Cross-Validation
+
+"""
+
+WARNING
+Scikit-Learn’s cross-validation features expect a utility function (greater is better) rather
+than a cost function (lower is better), so the scoring function is actually the opposite of the
+RMSE. It’s a negative value, so you need to switch the sign of the output to get the RMSE
+scores
+
+"""
+tree_rmses = -cross_val_score(tree_reg, housing, housing_labels, scoring="neg_root_mean_squared_error", cv=10)
+# print(pd.Series(tree_rmses).describe())
+
+
+# Random Forest
+forest_reg = make_pipeline(preprocessing, RandomForestRegressor(random_state=42))
+forest_rmses = -cross_val_score(forest_reg, housing, housing_labels, scoring="neg_root_mean_squared_error", cv=10)
+# print(pd.Series(forest_rmses).describe())
+
+
+# Fine-Tune Your Model
+
+# Grid Search
+
+
+full_pipeline = Pipeline([
+    ("preprocessing", preprocessing),
+    ("random_forest", RandomForestRegressor(random_state=42)),
+])
+
+param_grid = [
+    {'random_forest__max_features': [4, 6, 8]},
+    {'random_forest__max_features': [6, 8, 10]},
+]
+grid_search = GridSearchCV(full_pipeline, param_grid, cv=3,
+scoring='neg_root_mean_squared_error')
+grid_search.fit(housing, housing_labels)
+
+# print(grid_search.best_params_)
+
+cv_res = pd.DataFrame(grid_search.cv_results_)
+cv_res.sort_values(by="mean_test_score", ascending=False, inplace=True)
+# print(cv_res.head())
+
+
+
+# Randomized Search
+param_distribs = {
+        'random_forest__max_features': randint(low=2, high=20)
+}
+
+rnd_search = RandomizedSearchCV(
+    full_pipeline, param_distributions=param_distribs, n_iter=10, cv=3,
+    scoring='neg_root_mean_squared_error', random_state=42
+)
+
+rnd_search.fit(housing, housing_labels)
+# print(rnd_search.best_params_)
+
+# Ensemble Methods
+
+# Analyzing the Best Models and Their Errors
+final_model = rnd_search.best_estimator_
+feature_importances = final_model["random_forest"].feature_importances_
+# print(feature_importances.round(2))
+
+
+print(sorted(zip(feature_importances,final_model["preprocessing"].get_feature_names_out()),reverse=True))
